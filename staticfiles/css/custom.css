@@ -1,0 +1,191 @@
+body {
+    background-color: #ffffff;
+}
+
+.table {
+    background-color: white;
+}
+
+.table thead th {
+    background-color: #d1d1d1;
+
+}
+
+.table tbody tr:hover {
+    background-color: #f5f5f5;
+}
+
+.form-control:focus {
+    border-color: #ffffff !important;
+}
+
+.input-group:hover {
+    cursor: pointer;
+}
+
+.input-text {
+    border-radius: 10px;
+    padding: 2% 3% 2% 3%;
+    font-size: small;
+    background-color: #f9f9f9;
+}
+
+.btn-blue {
+    background-color: #1E90FF !important;
+    border-color: #1E90FF !important;
+    color: white !important;
+    font-size: small;
+    height: 20%;
+    width: 22%;
+    border-radius: 6px;
+}
+
+.btn-blue:hover {
+    background-color: #61b0ff !important;
+    border-color: #61b0ff !important;
+    color: white !important;
+}
+
+.date-input {
+    border-color: #1E90FF;
+    font-size: small;
+    margin-top: 0.5%;
+    height: 97%;
+}
+
+.date-input:hover {
+    cursor: pointer;
+}
+
+.date-input:focus {
+    border-color: #ffffff;
+}
+
+.input-group-text {
+    background-color: #1E90FF !important;
+    border-color: #ffffff !important;
+    color: white !important;
+    height: 105%;
+    margin-top: -1px;
+}
+
+.btn-daymodify {
+    font-size: small;
+    width: 50%;
+    border: none;
+    color: #1E90FF;
+    background-color: transparent;
+}
+
+
+.btn-daymodify:hover {
+    background-color: #e6f2ff;
+    color: black;
+}
+
+.btn-daymodify:focus {
+    background-color: transparent;
+    color: #1E90FF;
+    border: transparent;
+}
+
+.btn-daymodify:active {
+    background-color: transparent;
+    color: #1E90FF;
+}
+
+.chart-div-title {
+    padding-top:10px; 
+    padding-bottom: 10px; 
+    padding-left:10px;
+    margin-top: 20px; 
+    margin-left:10px; 
+    font-size:small; 
+    color:rgb(22, 22, 22); 
+    width: 97.8%; 
+    background-color: #e2e2e2; 
+    border-radius: 10px 10px 0 0;
+}
+
+.navbar-custom {
+    background-color: #1E90FF; 
+    padding-right: 0;
+  }
+
+  /* Customizing the navbar text color */
+  .navbar-custom .navbar-nav .nav-link {
+    color: white; /* White text color */
+  }
+
+  /* Customizing the toggle button color */
+  .navbar-custom .navbar-toggler-icon {
+    background-color: white; /* White toggle button color */
+  }
+
+  .navbar-brand {
+    color: white;
+  }
+
+  .delete-button {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: white; /* Text color */
+}
+
+.delete-button:hover {
+    background-color: #b21f2d; /* Darker red on hover */
+    border-color: #b21f2d; /* Darker red on hover */
+}
+
+.delete-button .fa-trash-alt {
+    color: white; /* Icon color */
+}
+
+
+.collapsible-div {
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  
+  .collapsible-header {
+    background-color: #f8f9fa;
+    padding: 10px 15px;
+    cursor: pointer;
+  }
+  
+  .collapsible-header .btn-link {
+    color: #333;
+    font-weight: bold;
+    text-decoration: none;
+  }
+  
+  .collapsible-header .btn-link:hover,
+  .collapsible-header .btn-link:focus {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .collapsible-body {
+    padding: 15px;
+    background-color: #fff;
+    display: none;
+  }
+  
+  /* Show/hide the collapsible body */
+  .collapsible-div.active .collapsible-body {
+    display: block;
+  }
+
+  .column-item {
+    width: 35%;
+  }
+  .column-quantity {
+    width: 18%;
+  }
+  .column-serving-size {
+    width: 22%;
+  }
+  .column-calories {
+    width: 25%;
+  }
