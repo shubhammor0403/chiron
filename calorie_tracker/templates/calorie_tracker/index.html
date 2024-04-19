@@ -1,0 +1,114 @@
+{% extends 'calorie_tracker/base.html' %}
+
+{% block content %}
+<!-- <div class="container mt-5 col-md-8 offset-md-2">
+    <div class="collapsible-div">
+        <div class="collapsible-header">
+          <button class="btn btn-link text-left">Collapsible Div Title</button>
+        </div>
+        <div class="collapsible-body">
+          <p>This is the content of the collapsible div.</p>
+        </div>
+      </div>
+  </div> -->
+
+  
+
+<div class="row col-md-8 offset-md-2" STYLE = "padding: 0;">
+    <div class="col-md-4" style = "padding: 0;">
+        <div class = "chart-div-title text-center" style = "margin-left:0; width: 100%"><b>R1Wk Growth</b></div>
+        <div class="card" style = "height: 160px; margin-top: -3px; padding: 0; z-index: -1px; border-radius: 0;">
+            <p id = "r1wk_growth_pct_field" class = "text-center" style="color: #5c5c5c; margin-top: 3%; font-size: 3em; margin-bottom: 0;">-</p> 
+            <p id = "r1wk_growth_field" class = "text-center" style = "color:#bababa; margin-top: -10px; margin-bottom: 5px;">-</p>
+            <div class = "row" style = "margin-top: 15px;">
+                <div class="col-md-6 text-center" style = "padding: 0; padding-left: 6%;"> 
+                    <h4 style = "color: #1E90FF; font-size: x-small; margin-bottom:3px;">Last Week</h4>
+                    <p id = "last_week_cals" style="color: #7d7d7d; margin-bottom: 0;">-</p>
+                </div>
+                <div class="col-md-6 text-center" style = "padding: 0; padding-right: 6%;"> 
+                    <h4 style = "color: #1E90FF; font-size: x-small; margin-bottom:3px;">This Week</h4>
+                    <p id = "this_week_cals" style="color: #7d7d7d; margin-bottom: 0;">-</p>
+                </div>
+            </div>
+            
+        </div>
+        
+        <div class = "chart-div-title text-center" style = "margin-top: 12px; margin-left:0; width: 100%"><b>Weekly Average</b></div>
+        <div class="card" style = "height: 120px; margin-top: -3px; padding: 0; z-index: -1px; border-radius: 0;">
+            <p id = "weekly_avg_field" class = "text-center" style="color: #5c5c5c; margin-top: 3%; font-size: 3em; margin-bottom: 0;">2100</p> 
+            <p class = "text-center" style = "color:#bababa">KCal</p>
+        </div>
+    </div>
+
+    <div class="col-md-8" style="padding: 0;">
+        <div class = "chart-div-title text-center"><b>Daily Trend</b></div>
+        <div class="card" style="height: 327px; margin-top: -3px; margin-left:10px; padding: 0; z-index: -1px; border-radius: 0;">
+            <canvas id="daily_tracker" style="padding: 20px; padding-bottom: 5px;"></canvas>
+        </div>
+    </div>
+</div>
+
+
+
+<b><h2 id = "title-top" class="text-left mb-4 offset-md-2" style="margin-top:3%;">Calorie Counter</h2></b>
+<div class="row mb-4">
+    <div class="col-md-4 offset-md-2">
+        <h4 class="mb-0"><span class="selected-date" style="color: #1E90FF;"></span></h4>
+    </div>
+
+    <div class="col-md-4 d-flex justify-content-end">
+        <button id = "prev-day" class="btn btn-secondary btn-daymodify">< Prev Day</button>
+        <div class="input-group date-picker">
+            <input type="text" class="form-control date-input" placeholder="Select date" readonly>
+            <div class="input-group-append">
+                <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+            </div>
+        </div>
+        <button id = "next-day" class="btn btn-secondary btn-daymodify">Next Day ></button>
+    </div>
+
+
+
+
+</div>
+
+<div id = "delete-button-div" class="d-flex justify-content-end col-md-8 offset-md-2" style = "padding-right:7px; margin-bottom: 10px;">
+    <button id = "delete-button" class="btn btn-danger delete-button" style = "display: none;">
+        <i class="fas fa-trash-alt mr-1"></i>Delete
+    </button>
+</div>
+<div id="result-table" class="col-md-8 offset-md-2" style = "padding: 0.6%;"></div>
+<div id="result-aggregate" class="col-md-8 offset-md-2" style = "margin-bottom: 30px; display: none;">
+    <div class="row">
+        <div class="col-md-4 text-center">
+            <b>Protein</b>
+            <h1 id = "protein_field" style="color: #1E90FF; margin-top: 10px;"></h1>
+        </div>
+
+        <div class="col-md-4 text-center">
+            <b>Carbs</b>
+            <h1 id = "carbs_field" style="color: #1E90FF; margin-top: 10px;"></h1>
+        </div>
+
+        <div class="col-md-4 text-center">
+            <b>Fats</b>
+            <h1 id = "fats_field" style="color: #1E90FF; margin-top: 10px;"></h1>
+        </div>
+    </div>
+
+
+</div>
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <p id = "p_title" style = "font-size: small; color: rgb(117, 117, 117);"><b>Add food items:</b></p>
+
+        <textarea id = "input-text" class="input-text form-control mb-3" rows="3" placeholder="E.g. 3 Bananas"></textarea>
+        <button id = "fetch-calories" class="btn btn-blue btn-sm float-left">Get Calorie details</button>
+    </div>
+</div>
+
+
+
+
+{% endblock %}
