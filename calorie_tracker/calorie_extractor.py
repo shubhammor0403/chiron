@@ -99,10 +99,10 @@ def generate_calorie_info_from_llm(food_items):
         messages=[
             {"role": "user", "content": prompt}
         ],
-        max_tokens=1024,
+        max_tokens=150,
         n=1,
         stop=None,
-        temperature=0.5,
+        temperature=0,
     )
 
     return response.choices[0].message.content.strip()
