@@ -7,7 +7,7 @@ import string
 import os
 from django.conf import settings
 
-client = OpenAI(api_key=settings.OPENAI_API_KEY)
+client = OpenAI()
 
 
 def generate_food_structure(food_items):
