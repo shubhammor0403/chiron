@@ -59,7 +59,7 @@ def fetch_calories(request):
         # Convert the DataFrame to a JSON-friendly format
         data = calorie_df.to_dict('records')
         # Construct the response dictionary
-        response = {'total_calories': total_calories, 'total_pr': total_pr, 'total_cb': total_cb, 'total_fa': total_fa, 'table_data': data}
+        response = {'total_calories': total_calories, 'total_pr': total_pr, 'total_cb': total_cb, 'total_fa': total_fa, 'table_data': data, 'output':'Noted!'}
     else:
         response = {'message': 'No data found for given date'}
     return Response(response)

@@ -31,7 +31,7 @@ async def call_api(text):
         # Replace this with your actual API endpoint and parameters
     api_url = 'https://shubhammor.pythonanywhere.com/api/fetch-calories/'
     response = requests.post(api_url, data={'input-text': text, 'input-date': today.strftime("%Y-%m-%d")})
-    print(response.json())
+    return response.json()['output']
 
 # Step 7: Set up the bot and add handlers
 app = ApplicationBuilder().token(BOT_TOKEN).build()
