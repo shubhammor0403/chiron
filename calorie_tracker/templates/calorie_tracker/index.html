@@ -1,19 +1,44 @@
 {% extends 'calorie_tracker/base.html' %}
 {% load static %}
 {% block content %}
-<!-- <div class="container mt-5 col-md-8 offset-md-2">
-    <div class="collapsible-div">
-        <div class="collapsible-header">
-          <button class="btn btn-link text-left">Collapsible Div Title</button>
-        </div>
-        <div class="collapsible-body">
-          <p>This is the content of the collapsible div.</p>
-        </div>
+
+  <nav class="navbar navbar-expand-lg navbar-custom">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Chiron</a>
+      <div class="d-flex">
+        <button id = "drawer-toggle" class="btn btn-outline-primary" type="button" style = "color: white; border: transparent;"><i class="fas fa-magic"></i></button>
       </div>
-  </div> -->
+    </div>
+  </nav>
+<div class="container my-5 container-custom">
+    <div class="drawer">
+        <button id="close-drawer-btn" class="btn close-btn">
+            <i class="fas fa-times"></i>
+          </button>
+          
+          <div id = "loader-icons" class = "d-flex" style = "display: none;">
+            <div class="diamond-icon-container mt-4 ml-4">
+                <svg class="diamond-icon" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <linearGradient id="diamond-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:rgb(74, 181, 238);" />
+                        <stop offset="100%" style="stop-color:lightgray;" />
+                      </linearGradient>
+                    </defs>
+                    <path d="M 25,0 L 50,25 L 25,50 L 0,25 Z" fill="url(#diamond-gradient)" />
+                  </svg>
+                  
+              </div>
+    
+              <div class="progress-bars-container">
+                <div class="progress-bar progress-bar-1"></div>
+                <div class="progress-bar progress-bar-2"></div>
+                <div class="progress-bar progress-bar-3"></div>
+              </div>
+          </div>
+          
 
-  
-
+      </div>
 <div class="row col-md-8 offset-md-2 analysis-div" style = "padding: 0;">
     <div class="col-md-4" style = "padding: 0;">
         <div class = "chart-div-title text-center" style = "margin-left:0; width: 100%"><b>R1Wk Growth</b></div>
@@ -138,7 +163,7 @@
             <button id="fetch-calories" class="btn btn-blue btn-sm fetch-btn">Get Calorie details</button>
         </div>
 </div>
-
+</div>
 <script>
     function fetch_table_item_html(item, quantity, serving_size, calories, date) {
         return `<div class="food-item-class d-flex align-items-center mb-2" style="background-color: #fbfbfb;">

@@ -8,17 +8,23 @@ $(document).ready(function() {
             year: 'numeric'
         }));
     }
+
     var today = new Date();
     updateSelectedDate(today);
     fetch_api(today,today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2));
     fetch_week_data();
 
-    $('#title-top').text(today.toLocaleDateString('en-GB', { weekday: 'long' })+"'s Calorie Counter");
-    $('.collapsible-header').click(function() {
-        $(this).closest('.collapsible-div').toggleClass('active');
-        $(this).next('.collapsible-body').slideToggle(200);
-      });
     
+    
+      $('#drawer-toggle').click(function() {
+        $('.drawer').toggleClass('open');
+        $("#loader-icons").css("display", "block");
+      });
+
+      $('#close-drawer-btn').click(function() {
+        $('.drawer').removeClass('open');
+        $("#loader-icons").css("display", "none");
+      });
     
     var date_input = flatpickr($('.date-input'),{
         dateFormat: 'd/m/Y',

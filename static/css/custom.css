@@ -1,5 +1,6 @@
 body {
     background-color: #ffffff;
+    /* overflow: auto; */
 }
 
 .table {
@@ -281,6 +282,172 @@ body {
 .today-calorie-div {
   border-right: 1px solid #5aacff;
 }
+
+.close-btn {
+  margin: 15px;
+  background-color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: box-shadow 0.3s ease;
+}
+
+.close-btn:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.close-btn i {
+  color: #666;
+  font-size: 16px;
+}
+
+.drawer {
+  position: fixed;
+  top: 0;
+  right: -450px; /* Start off-screen */
+  width: 18%;
+  height: 100%;
+  background-color: #f4f4f4;
+  transition: right 0.3s ease-in-out; /* Add a transition for smooth animation */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+}
+
+.drawer.open {
+  right: 0; /* Slide in from the right */
+}
+
+.progress-bars-container {
+  display: flex;
+  flex-direction: column; /* Stack bars vertically */
+  justify-content: space-between;
+  width: 100%;
+  margin: 0 auto;
+  padding: 30px;
+}
+
+.progress-bar {
+  height: 15px; /* Adjust height as needed */
+  margin-top:2px;
+  margin-bottom:2px;
+  background-color: rgb(212, 212, 212);
+  border-radius: 5px;
+  overflow: hidden;
+  position: relative; /* Needed for animation */
+  animation: progress-bar-infinite linear infinite; /* Infinite animation */
+  animation-duration: 1.2s; /* Adjust animation speed as needed */
+  width: 100%; /* Set width to 100% of container */
+}
+.progress-bar-3 {
+  width: 60%;
+}
+.progress-bar-1::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;  /* Start from the left outside the bar */
+  width: 100%;
+  height: 100%;
+  background-color: rgb(233, 233, 233);
+  animation: progress-bar-movement-1 linear infinite; /* Animation for moving background */
+  animation-duration: 1.2s; /* Match animation duration of progress bar */
+}
+
+.progress-bar-2::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;  /* Start from the left outside the bar */
+  width: 100%;
+  height: 100%;
+  background-color: rgb(233, 233, 233);
+  animation: progress-bar-movement-2 linear infinite; /* Animation for moving background */
+  animation-duration: 1.8s; /* Match animation duration of progress bar */
+}
+
+.progress-bar-3::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;  /* Start from the left outside the bar */
+  width: 100%;
+  height: 100%;
+  background-color: rgb(233, 233, 233);
+  animation: progress-bar-movement-3 linear infinite; /* Animation for moving background */
+  animation-duration: 1.8s; /* Match animation duration of progress bar */
+}
+
+@keyframes progress-bar-infinite {
+  0% {
+    background-color: transparent; /* Start with transparent background */
+  }
+  100% {
+    background-color: rgb(212, 212, 212); /* Animate to lightgray background */
+  }
+}
+
+/* Define unique keyframes for each progress bar movement */
+@keyframes progress-bar-movement-1 {
+  0% {
+    left: 0; /* Start from left edge */
+  }
+  100% {
+    left: 100%; /* Move all the way to the right */
+  }
+}
+
+@keyframes progress-bar-movement-2 {
+  0% {
+    left: -20%;  /* Start from slightly left of center (adjust as needed) */
+  }
+  100% {
+    left: 100%; /* Move beyond the right edge (adjust as needed) */
+  }
+}
+
+@keyframes progress-bar-movement-3 {
+  0% {
+    left: -100%; /* Start from the right edge */
+  }
+  100% {
+    left: 100%; /* Move beyond the left edge (adjust as needed) */
+  }
+}
+
+
+.diamond-icon-container {
+  display: flex; /* Center the icon horizontally */
+  justify-content: center;
+  width: 50px; /* Adjust width as needed */
+  height: 50px; /* Adjust height as needed */
+}
+
+/* Hide default outline for SVG element */
+.diamond-icon {
+  outline: none;
+}
+
+/* Gradient definition */
+
+
+/* Animation (Optional) */
+.diamond-icon {
+  animation: animate-diamond 3s linear infinite;
+}
+
+@keyframes animate-diamond {
+  from { transform: rotateZ(0deg); }
+  to { transform: rotateZ(360deg); }
+}
+
+/* ---------------------------------------- */
+
+
   @media (max-width: 768px) {
     .r1wk-card {
       height: 210px;
@@ -338,6 +505,10 @@ body {
     .analysis-div {
       margin-right: 0;
       margin-left: 0;
+    }
+
+    .drawer {
+      width: 90%;
     }
     
 }

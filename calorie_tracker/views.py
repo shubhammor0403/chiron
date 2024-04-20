@@ -25,10 +25,8 @@ def fetch_calories(request):
             input_date = datetime(date_obj.year, date_obj.month, date_obj.day)
 
     if(input_text!=''):
-        # add a function in calorie extractor to get structured quantity,item,serving -> Query db for getting other values
-        # Ones that did not have value will form new input text -> Call LLM and push to new db
-        # Merge answer and prev db extraction -> form df
         structured_items = generate_food_structure(input_text)
+        print(structured_items)
         # print(input_text, structured_items)
         # print(create_existingcheck_df(structured_items))
         df, input_text_llm, quantities = query_db_existing(create_existingcheck_df(structured_items))
