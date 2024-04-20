@@ -136,6 +136,7 @@ $(document).ready(function() {
                     $('#fetch-calories').text("Get Calorie details");
                     $('#p_title').text("Add food items:");
                     $('#delete-button').css('display', 'none');
+                    fetch_week_data();
                 }
             },
             error: function (xhr, status, error) {
@@ -180,7 +181,7 @@ $(document).ready(function() {
                 }
                 tableHtml += '</tr>';
             }
-            tableHtml += '<tr><td colspan="3"><b>Total Calories</b></td><td><b>'+data['total_calories']+'</b></td></tr>';
+            tableHtml += '<tr><td colspan="3"><b>Total Calories</b></td><td><b>'+data['total_calories']+' KCal</b></td></tr>';
             tableHtml += '</tbody></table>';
             $('#result-table').html(tableHtml);
         }
@@ -209,31 +210,41 @@ $(document).ready(function() {
         
         
     function updateChart(weekly_dict) {
-        $("#last_week_cals").text(weekly_dict['avg_weekly_calories_prev']+' KCal');
-        $("#this_week_cals").text(weekly_dict['avg_weekly_calories_current']+' KCal');
-        $("#weekly_avg_field").text(weekly_dict['avg_weekly_calories_current']);
-        var growth_var = weekly_dict['avg_weekly_calories_current']-weekly_dict['avg_weekly_calories_prev']
-        var growth_pct = growth_var / weekly_dict['avg_weekly_calories_prev'] * 100
-        growth_pct = Math.round(growth_pct * 10) / 10
-        
-        if(growth_pct > 0){
-            $("#r1wk_growth_pct_field").css('color', '#32CD32');
-            $("#r1wk_growth_pct_field").html('+'+growth_pct+'<h5 style = "font-size: large; display:inline;">%</h5>');
-            $("#r1wk_growth_field").text('+'+growth_var+' KCal');
-        }
-        else {
-            $("#r1wk_growth_pct_field").css('color', '#FF6347');
-            $("#r1wk_growth_pct_field").html(growth_pct+'<h5 style = "font-size: large; display:inline;">%</h5>');
-            $("#r1wk_growth_field").text(growth_var+' KCal');
-        }
-        
-        
-        
-
-        var chart = Chart.getChart('daily_tracker');
+        if  (weekly_dict != undefined) {
+            $("#no_data").css('display', 'none');
+            $("#last_week_cals").text(weekly_dict['avg_weekly_calories_prev']+' KCal');
+            $("#this_week_cals").text(weekly_dict['avg_weekly_calories_current']+' KCal');
+            $("#weekly_avg_field").text(weekly_dict['avg_weekly_calories_current']);
+            var growth_var = weekly_dict['avg_weekly_calories_current']-weekly_dict['avg_weekly_calories_prev'];
+            if(growth_var>0){
+                $("#r1wk_growth_field").text('+'+growth_var+' KCal');
+            }
+            else {
+                $("#r1wk_growth_field").text(growth_var+' KCal');
+            }
+            if(weekly_dict['avg_weekly_calories_prev']!=0 & weekly_dict['avg_weekly_calories_prev']!=0) {
+                var growth_pct = growth_var / weekly_dict['avg_weekly_calories_prev'] * 100;
+                growth_pct = Math.round(growth_pct * 10) / 10;
+                if(growth_pct > 0){
+                    $("#r1wk_growth_pct_field").css('color', '#32CD32');
+                    $("#r1wk_growth_pct_field").html('+'+growth_pct+'<h5 style = "font-size: large; display:inline;">%</h5>');
+                    
+                }
+                else {
+                    $("#r1wk_growth_pct_field").css('color', '#FF6347');
+                    $("#r1wk_growth_pct_field").html(growth_pct+'<h5 style = "font-size: large; display:inline;">%</h5>');
+                    
+                }
+            }
+            else {
+                $("#r1wk_growth_pct_field").html('-');
+            }
+            
+            
+            
+            var chart = Chart.getChart('daily_tracker');
         if (chart) {
             chart.destroy();
-            console.log('hhh');
         }
 
         var last_seven_days = weekly_dict['last_seven_days'];
@@ -327,6 +338,19 @@ $(document).ready(function() {
                 }
             }
         });
+        }
+        else {
+            var chart = Chart.getChart('daily_tracker');
+            if (chart) {
+                chart.destroy();
+            }
+            
+            $("#no_data").text('Not enough data for weekly analysis. Please track your calories for at least 7 days.');
+            $("#no_data").css('display', 'block');
+        }
+        
+
+        
 
 
 

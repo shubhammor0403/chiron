@@ -35,7 +35,7 @@
         
         <div class = "chart-div-title text-center" style = "margin-top: 12px; margin-left:0; width: 100%"><b>Weekly Average</b></div>
         <div class="card" style = "height: 120px; margin-top: -3px; padding: 0; z-index: -1px; border-radius: 0;">
-            <p id = "weekly_avg_field" class = "text-center" style="color: #5c5c5c; margin-top: 3%; font-size: 3em; margin-bottom: 0;">2100</p> 
+            <p id = "weekly_avg_field" class = "text-center" style="color: #5c5c5c; margin-top: 3%; font-size: 3em; margin-bottom: 0;">-</p> 
             <p class = "text-center" style = "color:#bababa">KCal</p>
         </div>
     </div>
@@ -44,6 +44,7 @@
         <div class = "chart-div-title text-center"><b>Daily Trend</b></div>
         <div class="card" style="height: 327px; margin-top: -3px; margin-left:10px; padding: 0; z-index: -1px; border-radius: 0;">
             <canvas id="daily_tracker" style="padding: 20px; padding-bottom: 5px;"></canvas>
+            <div id = "no_data" class = "text-center" style = "margin-top: -105px;font-size: small;color: gray; display:none;"></div>
         </div>
     </div>
 </div>

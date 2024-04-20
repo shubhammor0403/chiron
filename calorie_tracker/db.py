@@ -63,18 +63,20 @@ def query_db_existing(structured_df):
     else:
         #print(existing_items_df, input_text_df)
         input_text_llm_raw = []
+        quantities = []
         for index, row in input_text_df.iterrows():
         # Append text for the current row
             if row['serving'].lower() != 'item':
-                text = f"{row['quantity']} {row['serving']} {row['item']}"
+                text = f"{row['serving']}, {row['item']}"
             else:
-                text = f"{row['quantity']} {row['item']}"
+                text = f"{row['item']}"
+            quantities.append(row['quantity'])
             input_text_llm_raw.append(text)
 
         # Join the texts with '\n' after every row except the last one
         input_text_llm = '\n'.join(input_text_llm_raw)
     
-        return existing_items_df, input_text_llm
+        return existing_items_df, input_text_llm, quantities
 
 def push_to_food_db(df_llm):
     df_llm.rename(columns={'calories_per_item': 'calories'}, inplace=True)
@@ -146,6 +148,9 @@ def fetch_weekly_data():
         func.date(ChironCalories.date)  # Group by date
     ).all()
 
+    if items is None:
+        items = []
+
     subquery_current_week = session.query(
             func.date(ChironCalories.date).label('date'),
             func.sum(ChironCalories.calories).label('total_calories')
@@ -155,9 +160,16 @@ def fetch_weekly_data():
             func.date(ChironCalories.date)
         ).subquery()
 
-    avg_weekly_calories = int(session.query(
+    if subquery_current_week is None:
+        avg_weekly_calories = 0
+    else:
+        avg_weekly_calories = session.query(
         func.avg(subquery_current_week.c.total_calories).label('avg_weekly_calories')
-    ).select_from(subquery_current_week).scalar())
+            ).select_from(subquery_current_week).scalar()
+        if avg_weekly_calories is None:
+            avg_weekly_calories = 0
+        else:
+            avg_weekly_calories = int(avg_weekly_calories)
 
     subquery_prev_week = session.query(
             func.date(ChironCalories.date).label('date'),
@@ -168,20 +180,29 @@ def fetch_weekly_data():
             func.date(ChironCalories.date)
         ).subquery()
 
-    avg_prev_weekly_calories = int(session.query(
-        func.avg(subquery_prev_week.c.total_calories).label('avg_weekly_calories')
-    ).select_from(subquery_prev_week).scalar())
-    
+    if subquery_prev_week is None:
+        avg_prev_weekly_calories = 0 
+    else:
+        avg_prev_weekly_calories = session.query(
+            func.avg(subquery_prev_week.c.total_calories).label('avg_weekly_calories')
+        ).select_from(subquery_prev_week).scalar()
+        if avg_prev_weekly_calories is None:
+            avg_prev_weekly_calories = 0
+        else:
+            avg_prev_weekly_calories = int(avg_prev_weekly_calories)
+
     session.close()
 
-    if(items != []):
+    if items:
         data = [{'last_seven_days':[datetime.strptime(item.date, '%Y-%m-%d').strftime("%d %B") for item in items], 'calories':[item.calories for item in items], 
-                 'protein':[item.protein for item in items], 'carbs':[item.carbs for item in items], 'fat': [item.fat for item in items]}]
+                'protein':[item.protein for item in items], 'carbs':[item.carbs for item in items], 'fat': [item.fat for item in items]}]
         data[0]['avg_weekly_calories_current'] = avg_weekly_calories
         data[0]['avg_weekly_calories_prev'] = avg_prev_weekly_calories
     else:
         data = []
+        
     return data
+
 
 
 
