@@ -35,7 +35,6 @@ body {
     border-color: #1E90FF !important;
     color: white !important;
     font-size: small;
-    height: 20%;
     width: 22%;
     border-radius: 6px;
 }
@@ -98,7 +97,7 @@ body {
     padding-top:10px; 
     padding-bottom: 10px; 
     padding-left:10px;
-    margin-top: 20px; 
+    margin-top: 10px; 
     margin-left:10px; 
     font-size:small; 
     color:rgb(22, 22, 22); 
@@ -189,3 +188,81 @@ body {
   .column-calories {
     width: 25%;
   }
+  .r1wk-card {
+  height: 160px; margin-top: -3px; padding: 0; z-index: -1px; border-radius: 0;
+  }
+  .last-week-cal {
+    padding: 0; padding-left: 6%;
+  }
+  .this-week-cal {
+    padding: 0; padding-right: 6%;
+  }
+
+  .chart-div {
+    height: 327px; margin-top: -3px; margin-left:10px; padding: 0; z-index: -1px; border-radius: 0; 
+  }
+
+  .title-top {
+    margin-top:3%;
+  }
+
+  .btn-div {
+    padding: 0;
+  }
+  
+ 
+
+  @media (max-width: 768px) {
+    .r1wk-card {
+      height: 210px;
+    }
+    .last-week-cal {
+      padding: 0; 
+    }
+    .this-week-cal {
+      padding: 0;
+    }
+
+    .daily-trend-title {
+      margin-left: 0;
+      width: 100%;
+    }
+
+    .daily-trend-chart-div {
+      margin-left: 0;
+      width: 100%;
+    }
+
+    .selected-date-heading {
+      margin-bottom: 20px !important;
+      text-align: center;
+    }
+
+    .fetch-btn {
+      width: 160px;
+    }
+
+    .btn-div {
+      text-align: center;
+    }
+
+    .container-custom {
+      margin-left: 3%;
+      padding: 0;
+    }
+
+    .navbar-custom {
+      width: 106%;
+    }
+
+    .title-top {
+      text-align: center !important;
+      margin-top: 7%;
+    }
+
+    .analysis-div {
+      margin-right: 0;
+      margin-left: 0;
+    }
+    
+}

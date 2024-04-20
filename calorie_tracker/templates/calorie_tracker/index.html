@@ -14,18 +14,18 @@
 
   
 
-<div class="row col-md-8 offset-md-2" STYLE = "padding: 0;">
+<div class="row col-md-8 offset-md-2 analysis-div" style = "padding: 0;">
     <div class="col-md-4" style = "padding: 0;">
         <div class = "chart-div-title text-center" style = "margin-left:0; width: 100%"><b>R1Wk Growth</b></div>
-        <div class="card" style = "height: 160px; margin-top: -3px; padding: 0; z-index: -1px; border-radius: 0;">
+        <div class="card r1wk-card">
             <p id = "r1wk_growth_pct_field" class = "text-center" style="color: #5c5c5c; margin-top: 3%; font-size: 3em; margin-bottom: 0;">-</p> 
             <p id = "r1wk_growth_field" class = "text-center" style = "color:#bababa; margin-top: -10px; margin-bottom: 5px;">-</p>
             <div class = "row" style = "margin-top: 15px;">
-                <div class="col-md-6 text-center" style = "padding: 0; padding-left: 6%;"> 
+                <div class="col-md-6 text-center last-week-cal"> 
                     <h4 style = "color: #1E90FF; font-size: x-small; margin-bottom:3px;">Last Week</h4>
                     <p id = "last_week_cals" style="color: #7d7d7d; margin-bottom: 0;">-</p>
                 </div>
-                <div class="col-md-6 text-center" style = "padding: 0; padding-right: 6%;"> 
+                <div class="col-md-6 text-center this-week-cal"> 
                     <h4 style = "color: #1E90FF; font-size: x-small; margin-bottom:3px;">This Week</h4>
                     <p id = "this_week_cals" style="color: #7d7d7d; margin-bottom: 0;">-</p>
                 </div>
@@ -40,21 +40,21 @@
         </div>
     </div>
 
-    <div class="col-md-8" style="padding: 0;">
-        <div class = "chart-div-title text-center"><b>Daily Trend</b></div>
-        <div class="card" style="height: 327px; margin-top: -3px; margin-left:10px; padding: 0; z-index: -1px; border-radius: 0;">
+    <div class="col-md-8" style = "padding: 0;">
+        <div class = "chart-div-title text-center daily-trend-title"><b>Daily Trend</b></div>
+        <div class="card chart-div daily-trend-chart-div">
             <canvas id="daily_tracker" style="padding: 20px; padding-bottom: 5px;"></canvas>
-            <div id = "no_data" class = "text-center" style = "margin-top: -105px;font-size: small;color: gray; display:none;"></div>
+            <div id = "no_data" class = "text-center" style = "margin-top: -23%;font-size: small;color: gray; display:none; padding: 5px;"></div>
         </div>
     </div>
 </div>
 
 
 
-<b><h2 id = "title-top" class="text-left mb-4 offset-md-2" style="margin-top:3%;">Calorie Counter</h2></b>
-<div class="row mb-4">
+<b><h2 id = "title-top" class="text-left mb-4 offset-md-2 title-top">Calorie Counter</h2></b>
+<div class="row mb-2">
     <div class="col-md-4 offset-md-2">
-        <h4 class="mb-0"><span class="selected-date" style="color: #1E90FF;"></span></h4>
+        <h4 class="mb-0 selected-date-heading"><span class="selected-date" style="color: #1E90FF;"></span></h4>
     </div>
 
     <div class="col-md-4 d-flex justify-content-end">
@@ -73,7 +73,7 @@
 
 </div>
 
-<div id = "delete-button-div" class="d-flex justify-content-end col-md-8 offset-md-2" style = "padding-right:7px; margin-bottom: 10px;">
+<div id = "delete-button-div" class="d-flex justify-content-end col-md-8 offset-md-2" style = "padding-right:7px; margin-top: 20px;">
     <button id = "delete-button" class="btn btn-danger delete-button" style = "display: none;">
         <i class="fas fa-trash-alt mr-1"></i>Delete
     </button>
@@ -100,13 +100,13 @@
 
 </div>
 
-<div class="row">
-    <div class="col-md-8 offset-md-2">
+<div class="col-md-8 offset-md-2" style = "padding: 0;">
         <p id = "p_title" style = "font-size: small; color: rgb(117, 117, 117);"><b>Add food items:</b></p>
 
         <textarea id = "input-text" class="input-text form-control mb-3" rows="3" placeholder="E.g. 3 Bananas"></textarea>
-        <button id = "fetch-calories" class="btn btn-blue btn-sm float-left">Get Calorie details</button>
-    </div>
+        <div class="container btn-div">
+            <button id="fetch-calories" class="btn btn-blue btn-sm fetch-btn">Get Calorie details</button>
+        </div>
 </div>
 
 

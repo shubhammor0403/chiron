@@ -25,9 +25,10 @@ SECRET_KEY = "django-insecure-hyx#%)tucs%o)u3oyga$^5o%d8ru!yfu2nw!(4ib_he62yau=2
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
+# DEBUG = True
 
 ALLOWED_HOSTS = ['shubhammor.pythonanywhere.com']
-
+# ALLOWED_HOSTS = ['shubhammor.pythonanywhere.com','127.0.0.1']
 
 # Application definition
 
