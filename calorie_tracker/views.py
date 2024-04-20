@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .db import Session, push_to_db, fetch_from_db, fetch_weekly_data, query_db_existing, push_to_food_db, delete_db_calories
-from .calorie_extractor import generate_calorie_info_from_llm, create_calorie_df, generate_food_structure, create_existingcheck_df
+from .db import Session, push_to_db, fetch_from_db, fetch_weekly_data, query_db_existing, push_to_food_db, delete_db_calories, get_db_top_dishes, fetch_todays_items
+from .calorie_extractor import generate_calorie_info_from_llm, create_calorie_df, generate_food_structure, create_existingcheck_df, get_recommendations, process_recommendations, get_calories_for_rec, process_calories_for_rec
 from datetime import datetime
 from pytz import timezone
 import pandas as pd
@@ -26,7 +26,6 @@ def fetch_calories(request):
 
     if(input_text!=''):
         structured_items = generate_food_structure(input_text)
-        print(structured_items)
         # print(input_text, structured_items)
         # print(create_existingcheck_df(structured_items))
         df, input_text_llm, quantities = query_db_existing(create_existingcheck_df(structured_items))
@@ -78,4 +77,30 @@ def delete_calories(request):
 @api_view(['POST'])
 def fetch_week_data(request):
     response = fetch_weekly_data()
+
     return Response(response)
+
+@api_view(['POST'])
+def fetch_suggestions(request):
+    time_now = datetime.now(timezone('Asia/Kolkata'))
+    dinner = get_db_top_dishes('dinner')
+    if time_now.hour < 18:
+        snacks = get_db_top_dishes('snacks')
+    if time_now.hour < 15:
+        lunch = get_db_top_dishes('lunch')
+    if time_now.hour < 11:
+        breakfast = get_db_top_dishes('breakfast')
+    todays_items = fetch_todays_items()
+    recommendations = get_recommendations(todays_items, breakfast, snacks, lunch, dinner)
+    recommendations = process_recommendations(recommendations)
+    output_dict = {}
+    for key in recommendations:
+        if (key == "Breakfast" and breakfast!=''):
+            output_dict[key] = process_calories_for_rec(get_calories_for_rec(recommendations[key]))
+        if (key == "Lunch" and lunch!=''):
+            output_dict[key] = process_calories_for_rec(get_calories_for_rec(recommendations[key]))
+        if (key == "Snacks" and snacks!=''):
+            output_dict[key] = process_calories_for_rec(get_calories_for_rec(recommendations[key]))
+        if (key == "Dinner" and dinner!=''):
+            output_dict[key] = process_calories_for_rec(get_calories_for_rec(recommendations[key]))
+    return Response(output_dict)

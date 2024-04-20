@@ -15,27 +15,34 @@
         <button id="close-drawer-btn" class="btn close-btn">
             <i class="fas fa-times"></i>
           </button>
-          
-          <div id = "loader-icons" class = "d-flex" style = "display: none;">
-            <div class="diamond-icon-container mt-4 ml-4">
-                <svg class="diamond-icon" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                      <linearGradient id="diamond-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" style="stop-color:rgb(74, 181, 238);" />
-                        <stop offset="100%" style="stop-color:lightgray;" />
-                      </linearGradient>
-                    </defs>
-                    <path d="M 25,0 L 50,25 L 25,50 L 0,25 Z" fill="url(#diamond-gradient)" />
-                  </svg>
-                  
-              </div>
-    
-              <div class="progress-bars-container">
-                <div class="progress-bar progress-bar-1"></div>
-                <div class="progress-bar progress-bar-2"></div>
-                <div class="progress-bar progress-bar-3"></div>
+        <p class="text-center mb-4" style = "font-size: large;"><b>FPS Recommendations</b></p>
+          <div id = "loader-icons" class = "loader-icons">
+            <div class = "d-flex">
+                <div class="diamond-icon-container mt-4 ml-4">
+                    <svg class="diamond-icon" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                          <linearGradient id="diamond-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:rgb(74, 181, 238);" />
+                            <stop offset="100%" style="stop-color:lightgray;" />
+                          </linearGradient>
+                        </defs>
+                        <path d="M 25,0 L 50,25 L 25,50 L 0,25 Z" fill="url(#diamond-gradient)" />
+                      </svg>
+                      
+                  </div>
+        
+                  <div class="progress-bars-container">
+                    <div class="progress-bar progress-bar-1"></div>
+                    <div class="progress-bar progress-bar-2"></div>
+                    <div class="progress-bar progress-bar-3"></div>
+                  </div>
               </div>
           </div>
+
+        <div id = "rec-display">
+            
+        </div>
+          
           
 
       </div>
@@ -184,6 +191,33 @@
                         <p class="food-serving" style="font-size: small; margin-top: -5px;">${serving_size}</p>
                     </div>    
                 </div>`;
+    }
+
+    function fetch_item_rec_html(item, calories, protein, carbs, fats) {
+        return `
+            <div class="rec-item-class d-flex align-items-center mb-2" style = "background-color: #fbfbfb;">
+                <div class = "icon-food ml-3">
+                    <img src="{% static 'img/cutlery.png' %}" alt="Food Image" class="food-image">
+                </div>
+                <div class="rec-info ml-4">
+                    <p class="rec-name mb-0" style = "font-size: medium;">`+item+`</p>
+                    <p class = "rec-detail" style = "font-size: 11px; margin-top: -2px;">
+                        <span style="font-size:11px; margin:0; padding:0; color: #1E90FF;">Protein:</span> 
+                        `+protein+`g</p>
+                    <p class = "rec-detail" style = "font-size: 11px; margin-top: -17px;">
+                        <span style="font-size:11px; margin:0; padding:0; color: #1E90FF;">Carbs:</span> 
+                        `+carbs+`g</p>
+                        <p class = "rec-detail" style = "font-size: 11px; margin-top: -17px;">
+                            <span style="font-size:11px; margin:0; padding:0; color: #1E90FF;">Fats:</span> 
+                            `+fats+`g</p>
+    
+                        
+                </div>
+                <div class="rec-calories ml-auto text-center align-items-center justify-content-end" style = "height: 100% important;">
+                    <p class="rec-calories-amount mb-0" style = "font-size: 2pc; color: #1E90FF;">`+calories+`</p>
+                    <p class="rec-kcal" style = "font-size: small; margin-top: -5px; color: gray;">KCal</p>
+                </div>    
+            </div>`
     }
 </script>
 

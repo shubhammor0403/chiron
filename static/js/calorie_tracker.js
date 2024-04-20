@@ -19,11 +19,33 @@ $(document).ready(function() {
       $('#drawer-toggle').click(function() {
         $('.drawer').toggleClass('open');
         $("#loader-icons").css("display", "block");
-      });
+        $.ajax({
+        type: 'POST',
+        url: '/api/fetch-suggestions/',
+        data: { 'input-text': 'suggest' },
+        success: function (data) {
+        console.log(data);
+        $("#loader-icons").css("display", "none");
+        var htmldata = "";
+        for (var key in data) {
+            htmldata+=`<p class = mb-1" style="font-size: medium; color:#5c5c5c; padding-left: 10px;"><b>`+key+`</b></p>`
+                    htmldata += fetch_item_rec_html(data[key][0]['item'], data[key][0]['calories'], data[key][0]['protein'], data[key][0]['carbs'], data[key][0]['fats']);
+                    htmldata += fetch_item_rec_html(data[key][1]['item'], data[key][1]['calories'], data[key][1]['protein'], data[key][1]['carbs'], data[key][1]['fats']);
+        }
+        $("#rec-display").html(htmldata);
+        $(".rec-calories").css('height', 'auto');
+        },
+        error: function (xhr, status, error) {
+        console.error(error);
+        }
+        });
+
+    });
 
       $('#close-drawer-btn').click(function() {
         $('.drawer').removeClass('open');
         $("#loader-icons").css("display", "none");
+        $("#rec-display").html("");
       });
     
     var date_input = flatpickr($('.date-input'),{

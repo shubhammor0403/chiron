@@ -9,6 +9,102 @@ from django.conf import settings
 
 client = OpenAI()
 
+def get_recommendations(todays_items, breakfast, snacks, lunch, dinner):
+    if todays_items == '':
+        todays_items = 'None'
+    prompt = f"""Human: You are a food recommender for Indian context. You are part of an api, for the following inputs, provide an output in the given format.
+
+        Food items eaten today: """+todays_items+""" 
+
+        Most popular food items consumed post this time historically:"""
+    if breakfast!='':
+        prompt += f"""Breakfast: """+breakfast+"""\n"""
+    if lunch!='':
+        prompt += f"""Lunch: """+lunch+"""\n"""
+    if snacks!='':
+        prompt += f"""Snacks: """+snacks+"""\n"""
+    if dinner!='':
+        prompt += f"""Dinner: """+dinner+"""\n\n"""
+
+    prompt += """Ouput Format:
+    Breakfast,breakfast_food_item_1,breakfast_food_item_2
+    Lunch,lunch_food_item_1,lunch_food_item_2
+    Snacks,sancks_food_item_1,snacks_food_item_2
+    Dinner,dinner_food_item_1,dinner_food_item_2
+
+    Instruction:
+    - No additional text or details required in the beginning or end. You are part of an api to deliver this info. Follow the output format strictly.
+    - food_item_1 for all categories should be similar to one of food items given in that category in most popular food items input (needs to be some nearby recommendation).
+    - food_item_2 is a similar dish for that category for my input, but not a given one. Something new.
+    - Only include those categories in output which are given in most popular food items input. E.g., if only snacks and dinner inputs are given in most popular, output should have only snacks and dinner
+    - None of your output food_items should be present in food items eaten today input.
+    - Use sentence case for all outputs.
+"""
+    
+    response = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "user", "content": prompt}
+        ],
+        max_tokens=150,
+        n=1,
+        stop=None,
+        temperature=1.,
+    )
+
+    return response.choices[0].message.content.strip()
+
+def process_recommendations(recommendations):
+    recs = recommendations.split("\n")
+    # convert to list with keys as breakfast, lunch, snack and dinner
+    recs_dict = {}
+    for rec in recs:
+        key, item_1, item_2 = rec.split(",")
+        recs_dict[key] = [item_1, item_2]
+    return recs_dict
+
+def process_calories_for_rec(recommendations):
+    data = []
+    for line in recommendations.split('\n'):
+        parts = line.split(',')
+        if len(parts) == 5:
+            item = parts[0]
+            calories = int(float(parts[1]))
+            protein = int(float(parts[2]))
+            carbs = int(float(parts[3]))
+            fats = float(parts[4])
+            data.append({'item': item, 'calories': calories, 'protein': protein, 'carbs': carbs, 'fats': fats})
+    
+    return data
+
+def get_calories_for_rec(recommendations):
+    recommendations_string = ", ".join([row for row in recommendations])
+    prompt = f"""Human: Given a list of food items in the format [food_item_1, food_item_2], provide the calories (in KCal), protein (g), carbs (g), and fat (g) information for each item in the following format:
+
+        Food_item_1,calories,protein,carbs,fat
+        Food_item_2,calories,protein,carbs,fat
+
+        Instructions:
+        - No additional text or details required in the beginning or end. You are nutrition bot, part of an api to deliver this info. Follow the output format strictly.
+        - Provide calories in Indian context.
+        - Calories, protein, carbs, and fat should be for 1 quantity/serving of the item, without units.
+        - Use sentence case for all outputs.
+        
+        Food items:
+        {recommendations_string}
+    """
+    response = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "user", "content": prompt}
+        ],
+        max_tokens=150,
+        n=1,
+        stop=None,
+        temperature=0,
+    )
+
+    return response.choices[0].message.content.strip()
 
 def generate_food_structure(food_items):
     # prompt = f"""
@@ -114,7 +210,7 @@ def generate_calorie_info_from_llm(food_items):
     
     # """
 
-    prompt = f"""Human: Given a list of food items in the format [food_item] or [serving size, food_item], provide the calories, protein, carbs, and fat information for each item in the following format:
+    prompt = f"""Human: Given a list of food items in the format [food_item] or [serving size, food_item], provide the calories (in KCal), protein (g), carbs (g), and fat (g) information for each item in the following format:
 
         serving_size,food_item,calories,protein,carbs,fat//serving_size,food_item,calories,protein,carbs,fat
 

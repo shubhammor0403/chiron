@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, Integer, String, DateTime, func
+from sqlalchemy import create_engine, Column, Integer, String, DateTime, func, extract, text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import pandas as pd
@@ -39,6 +39,48 @@ class ChironFoodDB(Base):
 
 # Create a session maker
 Session = sessionmaker(bind=engine)
+
+
+def get_db_top_dishes(time):
+    if time == 'breakfast':
+        start_time = datetime.strptime('6:00', '%H:%M').time().strftime('%H:%M:%S')
+        end_time = datetime.strptime('11:00', '%H:%M').time().strftime('%H:%M:%S')
+    if time == 'lunch':
+        start_time = datetime.strptime('11:00', '%H:%M').time().strftime('%H:%M:%S')
+        end_time = datetime.strptime('15:00', '%H:%M').time().strftime('%H:%M:%S')
+    if time == 'snacks':
+        start_time = datetime.strptime('15:00', '%H:%M').time().strftime('%H:%M:%S')
+        end_time = datetime.strptime('21:00', '%H:%M').time().strftime('%H:%M:%S')
+    if time == 'dinner':
+        start_time = datetime.strptime('18:00', '%H:%M').time().strftime('%H:%M:%S')
+        end_time = datetime.strptime('23:59', '%H:%M').time().strftime('%H:%M:%S')
+    # Query and group by item name
+    #write and execute a sql query
+    sql_query = """
+        SELECT item
+        FROM chiron_calories
+        WHERE TIME(date) BETWEEN :start_time AND :end_time
+        GROUP BY item
+        ORDER BY SUM(quantity) DESC
+        LIMIT 5;
+    """
+
+    # sql_query = """
+    #     SELECT item, TIME(date) AS time, quantity from chiron_calories;
+    # """
+    with engine.connect() as connection:
+        result = connection.execute(text(sql_query), start_time=start_time, end_time=end_time)
+        rows = result.fetchall()
+
+    if rows != []:
+        result = ", ".join([row[0] for row in rows])
+    else:
+        result = ''
+    
+    
+    return result
+
+
 
 def query_db_existing(structured_df):
     session = Session()
@@ -121,6 +163,17 @@ def fetch_from_db(date):
         data = []
     return data
 
+def fetch_todays_items():
+    session = Session()
+    # query sql to get with only date as arg date
+    items = session.query(ChironCalories).filter(func.strftime('%Y-%m-%d', ChironCalories.date) == datetime.now().date().strftime('%Y-%m-%d')).all()
+    session.close()
+    # map query result to list of dicts
+    if(items != []):
+        data = result = ", ".join([row.item for row in items])
+    else:
+        data = ''
+    return data
 
 def clean_db():
     session = Session()
