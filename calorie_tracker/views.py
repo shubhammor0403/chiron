@@ -52,9 +52,10 @@ def fetch_calories(request):
         total_pr = df['protein'].sum()
         total_cb = df['carbs'].sum()
         total_fa = df['fat'].sum()
-        calorie_df = df.drop(columns=['id','date','protein','carbs','fat'])
+        df['date'] = df['date'].dt.strftime('%I:%M %p').apply(lambda x: x.lstrip('0'))
+        calorie_df = df.drop(columns=['id','protein','carbs','fat'])
         # modify column names of calorie_df to "Item","Quantity","Serving Size","Calories"
-        calorie_df = calorie_df.rename(columns={'item':'Item', 'quantity':'Quantity', 'serving':'Serving Size', 'calories':'Calories'})
+        calorie_df = calorie_df.rename(columns={'item':'Item', 'date':'Date', 'quantity':'Quantity', 'serving':'Serving Size', 'calories':'Calories'})
         calorie_df['Calories'] = calorie_df['Calories'].astype(str) + ' Kcal'
         # Convert the DataFrame to a JSON-friendly format
         data = calorie_df.to_dict('records')

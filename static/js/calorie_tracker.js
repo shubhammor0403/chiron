@@ -1,3 +1,4 @@
+
 $(document).ready(function() {
 
     function updateSelectedDate(selectedDate) {
@@ -80,7 +81,8 @@ $(document).ready(function() {
             url: '/api/fetch-calories/',
             data: { 'input-text': inputText, 'input-date': input_date_string},
             success: function (data) {
-                $('#result-table').html("");
+                console.log(data);
+                $('#result-food-items').html("");
                 if ('message' in data) {
                     $('#input-text').val('');
                     $('#result-aggregate').css('display', 'none');
@@ -129,7 +131,7 @@ $(document).ready(function() {
             url: '/api/delete-calories/',
             data: { 'input-date': input_date_string },
             success: function (data) {
-                $('#result-table').html("");
+                $('#result-food-items').html("");
                 if ('message' in data & data['message'] == 'Deleted') {
                     $('#input-text').val('');
                     $('#result-aggregate').css('display', 'none');
@@ -165,28 +167,17 @@ $(document).ready(function() {
         //     tableHtml += '</tbody></table>';
         //     $('#result-table').html(tableHtml);
         // }
-
         function displayDataTable(data) {
-            var tableHtml = '<table class="table table-bordered table-striped text-center" style="margin-bottom: 35px;">';
-            tableHtml += '<tbody><tr>';
-            for (var key in data['table_data'][0]) {
-                tableHtml += '<td><b>' + key + '</b></td>';
-            }
-            tableHtml += '</tr>';
-            tableHtml += '';
+            
+            var tableHtml= "";
             for (var i = 0; i < data['table_data'].length; i++) {
-                tableHtml += '<tr>';
-                for (var key in data['table_data'][i]) {
-                    tableHtml += '<td class="column-' + key.replace(/\s+/g, '-').toLowerCase() + '">' + data['table_data'][i][key] + '</td>';
-                }
-                tableHtml += '</tr>';
+            tableHtml += fetch_table_item_html(data['table_data'][i]['Item'],data['table_data'][i]['Quantity'],data['table_data'][i]['Serving Size'],data['table_data'][i]['Calories'],data['table_data'][i]['Date'])
             }
-            tableHtml += '<tr><td colspan="3"><b>Total Calories</b></td><td><b>'+data['total_calories']+' KCal</b></td></tr>';
-            tableHtml += '</tbody></table>';
-            $('#result-table').html(tableHtml);
+            $('#result-food-items').html(tableHtml);
         }
 
         function displayAggregateData(data) {
+            $('#total_field').html(data['total_calories']+' <span style = "padding: 0; margin:0; font-size: small;">KCal</span>');
             $('#protein_field').text(data['total_pr']+'g');
             $('#carbs_field').text(data['total_cb']+'g');
             $('#fats_field').text(data['total_fa']+'g');
@@ -231,7 +222,7 @@ $(document).ready(function() {
                     
                 }
                 else {
-                    $("#r1wk_growth_pct_field").css('color', '#FF6347');
+                    $("#r1wk_growth_pct_field").css('color', 'rgb(223, 71, 89)');
                     $("#r1wk_growth_pct_field").html(growth_pct+'<h5 style = "font-size: large; display:inline;">%</h5>');
                     
                 }
@@ -263,7 +254,7 @@ $(document).ready(function() {
                 labels: last_seven_days,
                 datasets: [
                     {
-                        label: 'Daily Calorie Intake',
+                        label: 'Daily Calorie Intake (KCal)',
                         data: total_week_calories,
                         type: 'line',
                         borderColor: '#ffcf1f',
@@ -274,22 +265,22 @@ $(document).ready(function() {
                     {
                         label: 'Protein (g)',
                         data: protein_week_values,
-                        backgroundColor: 'rgb(107, 174, 214, 0.7)',
-                        borderColor: 'rgb(107, 174, 214, 1)',
+                        backgroundColor: 'rgb(118, 183, 249)',
+                        borderColor: 'rgb(118, 183, 249)',
                         borderWidth: 0.3
                     },
                     {
                         label: 'Carbs (g)',
                         data: carbs_week_values,
-                        backgroundColor: 'rgb(45, 174, 16, 0.7)',
-                        borderColor: 'rgb(45, 174, 16, 0.7)',
+                        backgroundColor: 'rgb(45, 174, 16, 1)',
+                        borderColor: 'rgb(45, 174, 16, 1)',
                         borderWidth: 0.3
                     },
                     {
                         label: 'Fats (g)',
                         data: fats_week_values,
-                        backgroundColor: 'rgb(225, 9, 9, 0.7)',
-                        borderColor: 'rgb(225, 9, 9, 0.7)',
+                        backgroundColor: 'rgb(223, 71, 89, 1)',
+                        borderColor: 'rgb(223, 71, 89, 1)',
                         borderWidth: 0.3
                     }
                 ]
@@ -306,7 +297,7 @@ $(document).ready(function() {
                         position: 'right',
                         title: {
                             display: true,
-                            text: 'Macros',
+                            text: 'Macros (g)',
                             color: 'black',
                             font: {
                               family: 'sans-serif',

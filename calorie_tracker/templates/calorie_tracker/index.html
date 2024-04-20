@@ -1,5 +1,5 @@
 {% extends 'calorie_tracker/base.html' %}
-
+{% load static %}
 {% block content %}
 <!-- <div class="container mt-5 col-md-8 offset-md-2">
     <div class="collapsible-div">
@@ -19,7 +19,7 @@
         <div class = "chart-div-title text-center" style = "margin-left:0; width: 100%"><b>R1Wk Growth</b></div>
         <div class="card r1wk-card">
             <p id = "r1wk_growth_pct_field" class = "text-center" style="color: #5c5c5c; margin-top: 3%; font-size: 3em; margin-bottom: 0;">-</p> 
-            <p id = "r1wk_growth_field" class = "text-center" style = "color:#bababa; margin-top: -10px; margin-bottom: 5px;">-</p>
+            <p id = "r1wk_growth_field" class = "text-center" style = "color:#1E90FF; margin-top: -10px; margin-bottom: 5px;">-</p>
             <div class = "row" style = "margin-top: 15px;">
                 <div class="col-md-6 text-center last-week-cal"> 
                     <h4 style = "color: #1E90FF; font-size: x-small; margin-bottom:3px;">Last Week</h4>
@@ -35,7 +35,7 @@
         
         <div class = "chart-div-title text-center" style = "margin-top: 12px; margin-left:0; width: 100%"><b>Weekly Average</b></div>
         <div class="card" style = "height: 120px; margin-top: -3px; padding: 0; z-index: -1px; border-radius: 0;">
-            <p id = "weekly_avg_field" class = "text-center" style="color: #5c5c5c; margin-top: 3%; font-size: 3em; margin-bottom: 0;">-</p> 
+            <p id = "weekly_avg_field" class = "text-center" style="color: #1E90FF; margin-top: 3%; font-size: 3em; margin-bottom: 0;">-</p> 
             <p class = "text-center" style = "color:#bababa">KCal</p>
         </div>
     </div>
@@ -78,23 +78,53 @@
         <i class="fas fa-trash-alt mr-1"></i>Delete
     </button>
 </div>
-<div id="result-table" class="col-md-8 offset-md-2" style = "padding: 0.6%;"></div>
-<div id="result-aggregate" class="col-md-8 offset-md-2" style = "margin-bottom: 30px; display: none;">
+<div id = "result-food-items" class = "col-md-8 offset-md-2 mt-2" style = "padding:0;">
+    <!-- <div class="food-item-class d-flex align-items-center mb-2" style = "background-color: #fbfbfb;">
+            <div class = "icon-food ml-3">
+                <img src="{% static 'img/cutlery.png' %}" alt="Food Image" class="food-image">
+            </div>
+            <div class="food-info ml-4">
+                <p class="food-name mb-0" style = "font-size: 1.5pc;">Banana</p>
+                <p class = "food-time-added" style = "font-size: 11px; margin-top: -2px;">
+                    <span style="font-size:11px; margin:0; padding:0; color: #1E90FF;">Calories @</span> 
+                    215 KCal</p>
+                <p class = "food-calories" style = "font-size: 11px; margin-top: -17px;">
+                    <span style="font-size:11px; margin:0; padding:0; color: #1E90FF;">Added @</span> 
+                    11:36 PM</p>
+                    
+            </div>
+            <div class="food-quantity ml-auto text-center align-items-center justify-content-end">
+                <p class="food-number mb-0" style = "font-size: 2pc;">3</p>
+                <p class="food-serving" style = "font-size: small; margin-top: -5px;">Pieces</p>
+            </div>    
+    </div> -->
+    
+
+</div>
+<div id="result-aggregate" class="col-md-8 offset-md-2" style = "margin-top:40px; margin-bottom: 30px; display: none;">
     <div class="row">
-        <div class="col-md-4 text-center">
-            <b>Protein</b>
-            <h1 id = "protein_field" style="color: #1E90FF; margin-top: 10px;"></h1>
+        <div class="col-md-4 text-center today-calorie-div">
+            <b>Today's Calories</b>
+            <h1 id = "total_field" style="color: #1E90FF; margin-top: 10px; "></h1>
         </div>
+        <div class = "row d-flex agg-div">
+            <div class="col-md-3 text-center col-custom">
+                <b>Protein</b>
+                <h1 id = "protein_field" style="color: #1E90FF; margin-top: 10px;"></h1>
+            </div>
+    
+            <div class="col-md-2 text-center col-custom">
+                <b>Carbs</b>
+                <h1 id = "carbs_field" style="color: #1E90FF; margin-top: 10px;"></h1>
+            </div>
+    
+            <div class="col-md-2 text-center col-custom">
+                <b>Fats</b>
+                <h1 id = "fats_field" style="color: #1E90FF; margin-top: 10px;"></h1>
+            </div>
 
-        <div class="col-md-4 text-center">
-            <b>Carbs</b>
-            <h1 id = "carbs_field" style="color: #1E90FF; margin-top: 10px;"></h1>
         </div>
-
-        <div class="col-md-4 text-center">
-            <b>Fats</b>
-            <h1 id = "fats_field" style="color: #1E90FF; margin-top: 10px;"></h1>
-        </div>
+        
     </div>
 
 
@@ -109,7 +139,28 @@
         </div>
 </div>
 
-
+<script>
+    function fetch_table_item_html(item, quantity, serving_size, calories, date) {
+        return `<div class="food-item-class d-flex align-items-center mb-2" style="background-color: #fbfbfb;">
+                    <div class="icon-food ml-3">
+                        <img src="{% static 'img/cutlery.png' %}" alt="Food Image" class="food-image">
+                    </div>
+                    <div class="food-info ml-4">
+                        <p class="food-name mb-0" style="font-size: 1.5pc;">${item}</p>
+                        <p class="food-time-added" style="font-size: 11px; margin-top: -2px;">
+                            <span style="font-size:11px; margin:0; padding:0; color: #1E90FF;">Calories @</span> 
+                            ${calories}</p>
+                        <p class="food-calories" style="font-size: 11px; margin-top: -17px;">
+                            <span style="font-size:11px; margin:0; padding:0; color: #1E90FF;">Added @</span> 
+                            ${date}</p>
+                    </div>
+                    <div class="food-quantity ml-auto text-center align-items-center justify-content-end">
+                        <p class="food-number mb-0" style="font-size: 2pc;">${quantity}</p>
+                        <p class="food-serving" style="font-size: small; margin-top: -5px;">${serving_size}</p>
+                    </div>    
+                </div>`;
+    }
+</script>
 
 
 {% endblock %}

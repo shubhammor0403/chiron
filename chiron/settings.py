@@ -27,8 +27,8 @@ SECRET_KEY = "django-insecure-hyx#%)tucs%o)u3oyga$^5o%d8ru!yfu2nw!(4ib_he62yau=2
 DEBUG = False
 # DEBUG = True
 
-# ALLOWED_HOSTS = ['shubhammor.pythonanywhere.com']
-ALLOWED_HOSTS = ['shubhammor.pythonanywhere.com','127.0.0.1']
+ALLOWED_HOSTS = ['shubhammor.pythonanywhere.com']
+# ALLOWED_HOSTS = ['shubhammor.pythonanywhere.com','127.0.0.1']
 
 # Application definition
 
@@ -122,6 +122,9 @@ STATIC_URL = "/static/"
 # ]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

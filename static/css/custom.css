@@ -210,8 +210,77 @@ body {
     padding: 0;
   }
   
- 
+.food-item-class {
+  margin:0; 
+  border-radius: 5px; 
+  background-color: white; 
+  height: 80px; 
+  border-width: 1px; 
+  border-style: solid; 
+  border-color: rgb(182, 182, 182); 
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+}
 
+.col-custom {
+  flex: 0 0 20%;
+    max-width: 40%;
+}
+
+.agg-div {
+  margin-left: 9%;
+}
+.icon-food {
+    height: 45px;
+    width: 45px;
+    border-color: #1E90FF;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.food-details {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.food-image {
+    width: 20px;
+    height: 20px;
+    margin-right: 1px;
+}
+
+.food-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.food-name {
+    margin: 0;
+    margin-top: 10px;
+}
+
+.food-number {
+    margin: 0;
+    margin-top: 6px;
+}
+
+.food-quantity {
+  background-color: #1E90FF;
+  height: 100%;
+  width: 15%;
+  color: white;
+}
+ 
+.today-calorie-div {
+  border-right: 1px solid #5aacff;
+}
   @media (max-width: 768px) {
     .r1wk-card {
       height: 210px;
@@ -246,11 +315,17 @@ body {
       text-align: center;
     }
 
+    .agg-div {
+      text-align: center;
+    }
     .container-custom {
       margin-left: 3%;
       padding: 0;
     }
 
+    .today-calorie-div {
+      border-right: 0;
+    }
     .navbar-custom {
       width: 106%;
     }

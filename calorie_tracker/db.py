@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, Integer, String, Date, func
+from sqlalchemy import create_engine, Column, Integer, String, DateTime, func
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import pandas as pd
@@ -17,7 +17,7 @@ class ChironCalories(Base):
     __tablename__ = 'chiron_calories'
 
     id = Column(String, primary_key=True)
-    date = Column(Date)
+    date = Column(DateTime)
     item = Column(String)
     quantity = Column(Integer)
     serving = Column(String)
@@ -93,7 +93,8 @@ def push_to_db(data_df, date):
     session.commit()
     session.close()
     # query sql to get with only date as arg date
-    items = session.query(ChironCalories).filter(ChironCalories.date == date).all()
+
+    items = session.query(ChironCalories).filter(func.strftime('%Y-%m-%d', ChironCalories.date) == date.strftime('%Y-%m-%d')).all()
     session.close()
     # map query result to list of dicts
     data = [{'id': item.id, 'date': item.date, 'item': item.item, 'quantity': item.quantity, 
@@ -103,14 +104,14 @@ def push_to_db(data_df, date):
 
 def delete_db_calories(date):
     session = Session()
-    session.query(ChironCalories).filter(ChironCalories.date == date).delete()
+    session.query(ChironCalories).filter(func.strftime('%Y-%m-%d', ChironCalories.date) == date.strftime('%Y-%m-%d')).delete(synchronize_session='fetch')
     session.commit()
     session.close()
     
 def fetch_from_db(date):
     session = Session()
     # query sql to get with only date as arg date
-    items = session.query(ChironCalories).filter(ChironCalories.date == date).all()
+    items = session.query(ChironCalories).filter(func.strftime('%Y-%m-%d', ChironCalories.date) == date.strftime('%Y-%m-%d')).all()
     session.close()
     # map query result to list of dicts
     if(items != []):
@@ -152,12 +153,12 @@ def fetch_weekly_data():
         items = []
 
     subquery_current_week = session.query(
-            func.date(ChironCalories.date).label('date'),
+            func.date(func.strftime('%Y-%m-%d', ChironCalories.date)).label('date'),
             func.sum(ChironCalories.calories).label('total_calories')
         ).filter(
             ChironCalories.date.between(start_date_current_week, end_date_current_week)
         ).group_by(
-            func.date(ChironCalories.date)
+            func.date(func.strftime('%Y-%m-%d', ChironCalories.date))
         ).subquery()
 
     if subquery_current_week is None:
@@ -172,12 +173,12 @@ def fetch_weekly_data():
             avg_weekly_calories = int(avg_weekly_calories)
 
     subquery_prev_week = session.query(
-            func.date(ChironCalories.date).label('date'),
+            func.date(func.strftime('%Y-%m-%d', ChironCalories.date)).label('date'),
             func.sum(ChironCalories.calories).label('total_calories')
         ).filter(
             ChironCalories.date.between(start_date_previous_week, end_date_previous_week)
         ).group_by(
-            func.date(ChironCalories.date)
+            func.date(func.strftime('%Y-%m-%d', ChironCalories.date))
         ).subquery()
 
     if subquery_prev_week is None:
