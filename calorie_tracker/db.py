@@ -7,7 +7,7 @@ import random
 import string
 
 # Create a SQLite database engine
-engine = create_engine('sqlite:///mydatabase.db')
+engine = create_engine('sqlite:///Chiron.db')
 
 # Create a base class for defining database models
 Base = declarative_base()
