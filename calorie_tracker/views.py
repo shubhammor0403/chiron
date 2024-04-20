@@ -19,7 +19,7 @@ def fetch_calories(request):
     # parse input_date to get date then check if today, then assign input_date = current date and time
     if input_date:
         date_obj = datetime.strptime(input_date, '%Y-%m-%d').date()
-        if date_obj == datetime.today().date():
+        if date_obj == datetime.now(timezone('Asia/Kolkata')).date():
             input_date = datetime.now(timezone('Asia/Kolkata'))
         else:
             input_date = datetime(date_obj.year, date_obj.month, date_obj.day)

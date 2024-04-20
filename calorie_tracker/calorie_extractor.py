@@ -145,10 +145,12 @@ def generate_food_structure(food_items):
 
     prompt = f"""Human: Given a list of food items and their quantities, provide the following structured output for each item, separated by //: 
 
-        quantity,food_item,serving_size//quantity,food_item,serving_size
+        Output Format:
+        quantity,food_item_1,serving_size
+        quantity,food_item_2,serving_size
 
         Instructions:
-        - No additional text or details required in the beginning or end, follow the format strictly separating details by commas and items by //
+        - No additional text or details required in the beginning or end, follow the format strictly separating details by commas and items by \n
         - If serving size is mentioned with quantity (e.g., 1 cup dal), use that serving size. Otherwise, use 'Piece' as serving size.
         - Only include measurements in serving size when provided completely (e.g., 'Bowl (500ml)', not just 'Bowl').
         - Use sentence case for all outputs.
@@ -212,10 +214,11 @@ def generate_calorie_info_from_llm(food_items):
 
     prompt = f"""Human: Given a list of food items in the format [food_item] or [serving size, food_item], provide the calories (in KCal), protein (g), carbs (g), and fat (g) information for each item in the following format:
 
-        serving_size,food_item,calories,protein,carbs,fat//serving_size,food_item,calories,protein,carbs,fat
+        serving_size,food_item_1,calories,protein,carbs,fat
+        serving_size,food_item_2,calories,protein,carbs,fat
 
         Instructions:
-        - No additional text or details required in the beginning or end. Follow the output format strictly, separating details by commas and items by //.
+        - No additional text or details required in the beginning or end. Follow the output format strictly, separating details by commas and items by \n.
         - Provide calories in Indian context.
         - Calories, protein, carbs, and fat should be for 1 quantity/serving of the item, without units.
         - If serving size is mentioned, use that serving size to calculate calories. Otherwise, use 'Piece' as serving size.
@@ -242,7 +245,7 @@ def generate_calorie_info_from_llm(food_items):
 
 def create_existingcheck_df(calorie_info):
     data = []
-    for line in calorie_info.split('//'):
+    for line in calorie_info.split('\n'):
         parts = line.split(',')
         if len(parts) == 3:
             item = parts[1]
@@ -254,7 +257,7 @@ def create_existingcheck_df(calorie_info):
 
 def create_calorie_df(calorie_info, quantities):
     data = []
-    for line, quantity in zip(calorie_info.split('//'), quantities):
+    for line, quantity in zip(calorie_info.split('\n'), quantities):
         id = ''.join(random.choices(string.ascii_letters + string.digits, k=9))
         parts = line.split(',')
         if len(parts) == 6:
