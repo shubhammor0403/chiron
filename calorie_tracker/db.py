@@ -132,7 +132,7 @@ def fetch_weekly_data():
 
     end_date_current_week = datetime.now().date() + timedelta(days=1)
     start_date_current_week = datetime.now().date() - timedelta(days=6)
-    end_date_previous_week = start_date_current_week
+    end_date_previous_week = start_date_current_week - timedelta(days=1)
     start_date_previous_week = end_date_previous_week - timedelta(days=7)
 
 

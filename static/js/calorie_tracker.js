@@ -263,39 +263,34 @@ $(document).ready(function() {
                 labels: last_seven_days,
                 datasets: [
                     {
-                        label: 'Protein (g)',
-                        data: protein_week_values,
-                        backgroundColor: 'rgb(107, 174, 214, 0.7)',
-                        borderColor: 'rgb(107, 174, 214, 1)',
-                        borderWidth: 0.3,
-                        type: 'bar',
-                        stack: 'stack1'
-                    },
-                    {
-                        label: 'Carbs (g)',
-                        data: carbs_week_values,
-                        backgroundColor: 'rgb(120, 197, 156,0.7)',
-                        borderColor: 'rgb(120, 197, 156,1)',
-                        borderWidth: 0.3,
-                        type: 'bar',
-                        stack: 'stack1'
-                    },
-                    {
-                        label: 'Fats (g)',
-                        data: fats_week_values,
-                        backgroundColor: 'rgb(125, 125, 125, 0.7)',
-                        borderColor: 'rgb(125, 125, 125, 1)',
-                        borderWidth: 0.3,
-                        type: 'bar',
-                        stack: 'stack1'
-                    },
-                    {
                         label: 'Daily Calorie Intake',
                         data: total_week_calories,
                         type: 'line',
                         borderColor: '#ffcf1f',
                         backgroundColor: '#ffcf1f',
-                        borderWidth: 2
+                        borderWidth: 2,
+                        yAxisID: 'line-axis'
+                    },
+                    {
+                        label: 'Protein (g)',
+                        data: protein_week_values,
+                        backgroundColor: 'rgb(107, 174, 214, 0.7)',
+                        borderColor: 'rgb(107, 174, 214, 1)',
+                        borderWidth: 0.3
+                    },
+                    {
+                        label: 'Carbs (g)',
+                        data: carbs_week_values,
+                        backgroundColor: 'rgb(45, 174, 16, 0.7)',
+                        borderColor: 'rgb(45, 174, 16, 0.7)',
+                        borderWidth: 0.3
+                    },
+                    {
+                        label: 'Fats (g)',
+                        data: fats_week_values,
+                        backgroundColor: 'rgb(225, 9, 9, 0.7)',
+                        borderColor: 'rgb(225, 9, 9, 0.7)',
+                        borderWidth: 0.3
                     }
                 ]
             },
@@ -305,15 +300,30 @@ $(document).ready(function() {
                 height: 400,
                 width: 600,
                 scales: {
-
                     y: {
-                        stacked: true,
-                        beginAtZero: true,
+                        stacked:true,
+                        type: 'linear',
+                        position: 'right',
+                        title: {
+                            display: true,
+                            text: 'Macros',
+                            color: 'black',
+                            font: {
+                              family: 'sans-serif',
+                              size: 12,
+                              lineHeight: 1.2,
+                            }
+                        },
+                        id: 'stacked-axis',
                         ticks: {
+                            beginAtZero: true,
                             fontFamily: 'sans-serif',
                             fontStyle: 'bold',
                             color: 'gray'
-                        }
+                        },
+                        grid: {
+                            drawOnChartArea: false
+                          }
                     },
                     x: {
                         stacked: true,
