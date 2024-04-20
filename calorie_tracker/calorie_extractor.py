@@ -59,6 +59,7 @@ def generate_food_structure(food_items):
         - If no quantity is given, assume quantity = 1.
         - Quantities will mostly be given at the beginning (e.g., "3 Bananas" where 3 is the quantity).
         - In case multiple items are given separated by 'and'/'with', separate them into individual items with different quantities in the output.
+        - If the input contains a serving size followed by multiple food items separated by 'and'/'with', treat each food item as a separate item with the same serving size and quantity.
         
         Food items:
         {food_items}
