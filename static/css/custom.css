@@ -433,7 +433,7 @@ input:checked + .slider:before {
   padding-top: 7px;
   border-radius: 4px;
   font-size: 0.8em;
-  margin-right: -10% !important;
+  margin-left: 27% !important;
 }
 
 .rec-calories-amount {
