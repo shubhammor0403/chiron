@@ -228,6 +228,11 @@ body {
   align-items: center;
 }
 
+.food-item-delete-button-div {
+  margin-top: 21px;
+  width: 16%;
+}
+
 .rec-item-class {
   margin:10px; 
   border-radius: 5px; 

@@ -122,7 +122,6 @@ $(document).ready(function() {
             url: '/api/fetch-calories/',
             data: { 'input-text': inputText, 'input-date': input_date_string},
             success: function (data) {
-                console.log(data);
                 $('#result-food-items').html("");
                 if ('message' in data) {
                     $('#input-text').val('');
@@ -130,6 +129,7 @@ $(document).ready(function() {
                     $('#fetch-calories').text("Get Calorie details");
                     $('#p_title').text("Add food items:");
                     $('#delete-button').css('display', 'none');
+                    fetch_week_data();
                 }
                 else {
                     $('#input-text').val('');
@@ -138,6 +138,10 @@ $(document).ready(function() {
                     if (inputText != null) {
                         fetch_week_data();
                     }
+
+                    updateDeleteIndividualListeners();
+                
+
                     $('#title-top').text(input_date.toLocaleDateString('en-GB', { weekday: 'long' })+"'s Calorie Counter");
                     $('#result-aggregate').css('display', 'block');
                     $('#fetch-calories').text("Update Calorie details");
@@ -151,7 +155,39 @@ $(document).ready(function() {
         });
     };
 
+    function updateDeleteIndividualListeners() {
+        console.log('setting');
+        $('.delete-individual-btn').click(function (event) {
+            var id = $(this).attr('data-id');
+            console.log(id);
+            
+            $.ajax({
+                type: 'POST',
+                url: '/api/delete-individual/',
+                data: { id: id },
+                success: function (data) {
+                    console.log(data);
+                if ('message' in data & data['message'] == 'Deleted') {
+                    $('#wrapper-'+id).slideUp('fast', function() {
+                        $('#wrapper-'+id).remove();
+                        if ($('#result-food-items').html() == ''){
+                            var selectedDateStr = $('.date-input').val();
+                            var dateParts = selectedDateStr.split("/");
+                            var selectedDate = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]);
+                            fetch_api(selectedDate, selectedDate.getFullYear() + '-' + ('0' + (selectedDate.getMonth() + 1)).slice(-2) + '-' + ('0' + selectedDate.getDate()).slice(-2));
+                        }
+                }
+                    
+                )} 
+                
+            },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                }
+            });
 
+        });
+    };
     $('#fetch-calories').click(function(event) {
 
         var selectedDateStr = $('.date-input').val();
@@ -161,6 +197,8 @@ $(document).ready(function() {
         var inputText = $('#input-text').val();
         fetch_api(input_date, input_date_string, inputText);
     });
+
+    
 
     $('#delete-button').click(function(event) {
         var selectedDateStr = $('.date-input').val();
@@ -188,10 +226,9 @@ $(document).ready(function() {
         });
     });
         function displayDataTable(data) {
-            
             var tableHtml= "";
             for (var i = 0; i < data['table_data'].length; i++) {
-            tableHtml += fetch_table_item_html(data['table_data'][i]['Item'],data['table_data'][i]['Quantity'],data['table_data'][i]['Serving Size'],data['table_data'][i]['Calories'],data['table_data'][i]['Date'])
+            tableHtml += fetch_table_item_html(data['table_data'][i]['Item'],data['table_data'][i]['Quantity'],data['table_data'][i]['Serving Size'],data['table_data'][i]['Calories'],data['table_data'][i]['Date'], data['table_data'][i]['id'])
             }
             $('#result-food-items').html(tableHtml);
         }

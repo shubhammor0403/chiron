@@ -76,7 +76,7 @@ def get_db_top_dishes(time):
         result = ", ".join([row[0] for row in rows])
     else:
         result = ''
-    
+    print(time, rows)
     
     return result
 
@@ -149,7 +149,13 @@ def delete_db_calories(date):
     session.query(ChironCalories).filter(func.strftime('%Y-%m-%d', ChironCalories.date) == date.strftime('%Y-%m-%d')).delete(synchronize_session='fetch')
     session.commit()
     session.close()
-    
+
+def delete_db_individual_calories(id):
+    session = Session()
+    session.query(ChironCalories).filter(ChironCalories.id == id).delete(synchronize_session='fetch')
+    session.commit()
+    session.close()
+
 def fetch_from_db(date):
     session = Session()
     # query sql to get with only date as arg date

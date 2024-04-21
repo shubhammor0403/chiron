@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .db import Session, push_to_db, fetch_from_db, fetch_weekly_data, query_db_existing, push_to_food_db, delete_db_calories, get_db_top_dishes, fetch_todays_items
+from .db import Session, push_to_db, fetch_from_db, fetch_weekly_data, query_db_existing, push_to_food_db, delete_db_calories, get_db_top_dishes, fetch_todays_items, delete_db_individual_calories
 from .calorie_extractor import generate_calorie_info_from_llm, create_calorie_df, generate_food_structure, create_existingcheck_df, get_recommendations, process_recommendations, get_calories_for_rec, process_calories_for_rec
 from datetime import datetime
 from pytz import timezone
@@ -50,7 +50,7 @@ def fetch_calories(request):
         total_cb = df['carbs'].sum()
         total_fa = df['fat'].sum()
         df['date'] = df['date'].dt.strftime('%I:%M %p').apply(lambda x: x.lstrip('0'))
-        calorie_df = df.drop(columns=['id','protein','carbs','fat'])
+        calorie_df = df.drop(columns=['protein','carbs','fat'])
         # modify column names of calorie_df to "Item","Quantity","Serving Size","Calories"
         calorie_df = calorie_df.rename(columns={'item':'Item', 'date':'Date', 'quantity':'Quantity', 'serving':'Serving Size', 'calories':'Calories'})
         calorie_df['Calories'] = calorie_df['Calories'].astype(str) + ' Kcal'
@@ -75,6 +75,15 @@ def delete_calories(request):
     return Response(response)
 
 @api_view(['POST'])
+def delete_individual(request):
+
+    input_id = request.data.get('id')
+    delete_db_individual_calories(input_id)
+    response = {'message': 'Deleted'}
+    
+    return Response(response)
+
+@api_view(['POST'])
 def fetch_week_data(request):
     response = fetch_weekly_data()
 
@@ -84,6 +93,9 @@ def fetch_week_data(request):
 def fetch_suggestions(request):
     time_now = datetime.now(timezone('Asia/Kolkata'))
     dinner = get_db_top_dishes('dinner')
+    snacks = ''
+    lunch = ''
+    breakfast = ''
     if time_now.hour < 18:
         snacks = get_db_top_dishes('snacks')
     if time_now.hour < 15:
