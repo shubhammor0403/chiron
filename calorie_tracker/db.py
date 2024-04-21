@@ -229,7 +229,8 @@ def fetch_weekly_data():
             func.date(func.strftime('%Y-%m-%d', ChironCalories.date)).label('date'),
             func.sum(ChironCalories.calories).label('total_calories')
         ).filter(
-            ChironCalories.date.between(start_date_current_week, end_date_current_week)
+            ChironCalories.date.between(start_date_current_week, end_date_current_week),
+            ChironCalories.status == 'completed'
         ).group_by(
             func.date(func.strftime('%Y-%m-%d', ChironCalories.date))
         ).subquery()
@@ -249,7 +250,8 @@ def fetch_weekly_data():
             func.date(func.strftime('%Y-%m-%d', ChironCalories.date)).label('date'),
             func.sum(ChironCalories.calories).label('total_calories')
         ).filter(
-            ChironCalories.date.between(start_date_previous_week, end_date_previous_week)
+            ChironCalories.date.between(start_date_previous_week, end_date_previous_week),
+            ChironCalories.status == 'completed'
         ).group_by(
             func.date(func.strftime('%Y-%m-%d', ChironCalories.date))
         ).subquery()
