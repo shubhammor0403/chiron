@@ -153,7 +153,7 @@ def generate_food_structure(food_items):
         Instructions:
         - If only one food_item is provided, output only food_item_1 and details. Only output multiple lines incase multiple are input.
         - Make sure to get all quantities right (as per input), even if outputting one line.
-        - No additional text or details required in the beginning or end, follow the format strictly separating details by commas and items by \n
+        - No additional text or details required in the beginning or end, follow the format strictly separating details by commas and items by \n. You are part of an api to deliver this info. Follow the output format strictly.
         - If serving size is mentioned with quantity (e.g., 1 cup dal), use that serving size Otherwise, use 'Piece' as serving size.
         - Only include measurements in serving size when provided completely (e.g., 'Bowl (500ml)', not just 'Bowl').
         - Capitalize first letter of every word in food_item and serving_size values.
@@ -213,17 +213,18 @@ def generate_calorie_info_from_llm(food_items):
     
     # """
 
-    prompt = f"""Human: Given a list of food items in the format [food_item] or [serving size, food_item], provide the calories (in KCal), protein (g), carbs (g), and fat (g) information for each item in the following format:
+    prompt = f"""Human: Given a list of single or multile food item(s) separated by new line in the format [serving size, food_item] or [food_item], provide the calories (in KCal), protein (g), carbs (g), and fat (g) information for each item in the following format:
 
+        Output Format:
         serving_size,food_item_1,calories,protein,carbs,fat
         serving_size,food_item_2,calories,protein,carbs,fat
 
         Instructions:
-        - If only one food_item is provided, output only food_item_1 and details. Only output multiple lines incase multiple are input.
-        - No additional text or details required in the beginning or end. Follow the output format strictly, separating details by commas and items by \n.
+        - If only one food_item is provided, output only food_item_1 and details. Output multiple lines only incase multiple food_items are input.
+        - No additional text or details required in the beginning or end. Follow the output format strictly, separating details by commas and items by \n. You are part of an api to deliver this info. Follow the output format strictly.
         - Provide calories in Indian context.
         - Calories, protein, carbs, and fat should be for 1 serving _size of the item, without units.
-        - If serving size is mentioned, use that serving size to calculate calories and details. Otherwise, use 'Piece' as serving size.
+        - If serving size is input, use that serving size to calculate calories and details. Otherwise, use 'Piece' as serving size.
         - Only include measurements in serving size when provided completely (e.g., 'Bowl (500ml)', not just 'Bowl').
         - Capitalize first letter of every word in food_item and serving_size values.
         - In case multiple items are given in a single line separated by 'and'/'with' (e.g. 3 Roti with Paneer Sabzi), think step by step and output the sum of calories and details for each item. (i.e calories of 3 Roti + calories of 1 Paneer Sabzi)
