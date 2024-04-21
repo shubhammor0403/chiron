@@ -135,9 +135,7 @@ $(document).ready(function() {
                     $('#input-text').val('');
                     displayDataTable(data);
                     displayAggregateData(data);
-                    if (inputText != null) {
-                        fetch_week_data();
-                    }
+                    fetch_week_data();
 
                     updateDeleteIndividualListeners();
                 
@@ -159,32 +157,27 @@ $(document).ready(function() {
         console.log('setting');
         $('.delete-individual-btn').click(function (event) {
             var id = $(this).attr('data-id');
-            console.log(id);
-            
+            $('#wrapper-'+id).slideUp('fast', function() {
+                $('#wrapper-'+id).remove();
+            })
             $.ajax({
                 type: 'POST',
                 url: '/api/delete-individual/',
                 data: { id: id },
                 success: function (data) {
-                    console.log(data);
                 if ('message' in data & data['message'] == 'Deleted') {
-                    $('#wrapper-'+id).slideUp('fast', function() {
-                        $('#wrapper-'+id).remove();
-                        if ($('#result-food-items').html() == ''){
-                            var selectedDateStr = $('.date-input').val();
-                            var dateParts = selectedDateStr.split("/");
-                            var selectedDate = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]);
-                            fetch_api(selectedDate, selectedDate.getFullYear() + '-' + ('0' + (selectedDate.getMonth() + 1)).slice(-2) + '-' + ('0' + selectedDate.getDate()).slice(-2));
-                        }
-                }
-                    
-                )} 
-                
+                        var selectedDateStr = $('.date-input').val();
+                        var dateParts = selectedDateStr.split("/");
+                        var selectedDate = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]);
+                        fetch_api(selectedDate, selectedDate.getFullYear() + '-' + ('0' + (selectedDate.getMonth() + 1)).slice(-2) + '-' + ('0' + selectedDate.getDate()).slice(-2));
+                    } 
             },
                 error: function (xhr, status, error) {
                     console.error(error);
                 }
             });
+            
+            
 
         });
     };
