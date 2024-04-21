@@ -223,7 +223,7 @@ def generate_calorie_info_from_llm(food_items):
 
         Instructions:
         - If only one food_item is provided, output only food_item_1 and details. Output multiple lines only incase multiple food_items are input.
-        - No additional text or details required in the beginning or end. Follow the output format strictly, separating details by commas and items by \n. You are part of an api to deliver this info. Follow the output format strictly.
+        - No additional text or details (like 'API Output:' or 'Output:' required in the beginning or end. Follow the output format strictly, separating details by commas and items by \n. You are part of an api to deliver this info. Follow the output format strictly.
         - Provide calories in Indian context.
         - Calories, protein, carbs, and fat should be for 1 serving _size of the item, without units.
         - If serving size is input, use that serving size to calculate calories and details. Otherwise, use 'Piece' as serving size.

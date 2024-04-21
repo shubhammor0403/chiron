@@ -7,7 +7,7 @@ import random
 import string
 
 # Create a SQLite database engine
-engine = create_engine('sqlite:///Chiron.db')
+engine = create_engine('sqlite:///ChironDB.db')
 
 # Create a base class for defining database models
 Base = declarative_base()
@@ -25,6 +25,7 @@ class ChironCalories(Base):
     protein = Column(Integer)
     carbs = Column(Integer)
     fat = Column(Integer)
+    status = Column(String)
 
 class ChironFoodDB(Base):
     __tablename__ = 'chiron_food_db'
@@ -101,7 +102,11 @@ def query_db_existing(structured_df):
     existing_items_df = existing_items_df[['id'] + [col for col in existing_items_df.columns if col != 'id']]
     input_text_df = merged_df[merged_df['calories'].isna()]
     if input_text_df.empty:
-        return existing_items_df, ""
+        quantities = []
+        for index, row in input_text_df.iterrows():
+            quantities.append(row['quantity'])
+            
+        return existing_items_df, "", quantities
     else:
         #print(existing_items_df, input_text_df)
         input_text_llm_raw = []
@@ -117,7 +122,7 @@ def query_db_existing(structured_df):
 
         # Join the texts with '\n' after every row except the last one
         input_text_llm = '\n'.join(input_text_llm_raw)
-    
+        print(existing_items_df, input_text_llm, quantities)
         return existing_items_df, input_text_llm, quantities
 
 def push_to_food_db(df_llm):
@@ -140,8 +145,9 @@ def push_to_db(data_df, date):
     session.close()
     # map query result to list of dicts
     data = [{'id': item.id, 'date': item.date, 'item': item.item, 'quantity': item.quantity, 
-             'serving': item.serving, 'calories': item.calories, 'protein': item.protein, 'carbs': item.carbs, 'fat': item.fat} for item in items]
-    df = pd.DataFrame(data)    
+             'serving': item.serving, 'calories': item.calories, 'protein': item.protein, 'carbs': item.carbs, 'fat': item.fat, 'status': item.status} for item in items]
+    df = pd.DataFrame(data)
+
     return df
 
 def delete_db_calories(date):
@@ -156,6 +162,13 @@ def delete_db_individual_calories(id):
     session.commit()
     session.close()
 
+def add_db_planned_calories(id, date):
+    session = Session()
+    session.query(ChironCalories).filter(ChironCalories.id == id).update({"status": "completed", "date": date}, synchronize_session="fetch")  
+    session.commit()
+    session.close()
+
+
 def fetch_from_db(date):
     session = Session()
     # query sql to get with only date as arg date
@@ -164,7 +177,7 @@ def fetch_from_db(date):
     # map query result to list of dicts
     if(items != []):
         data = [{'id': item.id, 'date': item.date, 'item': item.item, 'quantity': item.quantity, 
-                'serving': item.serving, 'calories': item.calories, 'protein': item.protein, 'carbs': item.carbs, 'fat': item.fat} for item in items]
+                'serving': item.serving, 'calories': item.calories, 'protein': item.protein, 'carbs': item.carbs, 'fat': item.fat, 'status': item.status} for item in items]
     else:
         data = []
     return data

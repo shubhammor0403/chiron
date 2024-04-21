@@ -169,7 +169,17 @@
 </div>
 
 <div class="col-md-8 offset-md-2 mb-5" style = "padding: 0;">
-        <p id = "p_title" style = "font-size: small; color: rgb(117, 117, 117);"><b>Add food items:</b></p>
+    <div id = "pre-textbox-div" class = "pre-textbox-div d-flex">
+        <p id = "p_title" class = "col-md-10" style = "font-size: small; color: rgb(117, 117, 117);"><b>Add food items:</b></p>
+        <div id = "plan-mode-div" class="toggle-container col-md-2 justify-content-end">
+            <label class="toggle-switch">
+              <input id = "plan-mode" type="checkbox">
+              <span class="slider round"></span>
+            </label>
+            <span class="toggle-label">Plan mode</span>
+          </div>
+    </div>
+        
 
         <textarea id = "input-text" class="input-text form-control mb-3" rows="3" placeholder="E.g. 3 Bananas"></textarea>
         <div class="container btn-div">
@@ -178,8 +188,41 @@
 </div>
 </div>
 <script>
-    function fetch_table_item_html(item, quantity, serving_size, calories, date, id) {
-        return `<div id = "wrapper-`+id+`" class = "d-flex" style = "width: 100%;">
+    function fetch_table_item_html(item, quantity, serving_size, calories, date, id, status) {
+        if(status=='plan'){
+            var htmlString = `<div id = "wrapper-`+id+`" class = "d-flex" style = "width: 100%;">
+                    <div class="col-md-11 food-item-class d-flex align-items-center mb-2 " style = "background-color: #fbfbfb; padding: 0;">
+                        <div class="icon-food-plan ml-3">
+                            <img src="{% static 'img/cutlery-yellow.png' %}" alt="Food Image" class="food-image">
+                        </div>
+                        <div class="food-info ml-4">
+                            <p class="food-name mb-0" style="font-size: 1.5pc;">${item}</p>
+                            <p class="food-time-added" style="font-size: 11px; margin-top: -2px;">
+                                <span style="font-size:11px; margin:0; padding:0; color: #8f6b00;">Calories @</span> 
+                                ${calories}</p>
+                            <p class="food-calories" style="font-size: 11px; margin-top: -17px;">
+                                <span style="font-size:11px; margin:0; padding:0; color: #8f6b00;">Planned @</span> 
+                                ${date}</p>
+                        </div>
+                        <div class="ml-auto m-4 text-center align-items-center justify-content-end planned-indication ">
+                            Planned
+                            </div><div class="food-quantity-plan ml-auto text-center align-items-center justify-content-end">
+                            <p class="food-number mb-0" style="font-size: 2pc;">${quantity}</p>
+                            <p class="food-serving" style="font-size: small; margin-top: -5px;">${serving_size}</p>
+                        </div> 
+                        </div>
+                            <div id = "food-item-delete-add-button-div" class = "col-md-1 food-item-delete-add-button-div text-center align-items-center justify-content-end">
+                                <button type="button" data-id = "`+id+`" class = "btn btn-light add-planned-btn">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                        <button type="button" data-id = "`+id+`" class = "btn btn-light delete-individual-btn">
+                            <i class="fas fa-trash-alt"></i>
+                        </button> 
+                    </div> 
+                </div>`;
+        }
+        else {
+            var htmlString = `<div id = "wrapper-`+id+`" class = "d-flex" style = "width: 100%;">
                     <div class="col-md-11 food-item-class d-flex align-items-center mb-2 " style = "background-color: #fbfbfb; padding: 0;">
                         <div class="icon-food ml-3">
                             <img src="{% static 'img/cutlery.png' %}" alt="Food Image" class="food-image">
@@ -196,15 +239,19 @@
                         <div class="food-quantity ml-auto text-center align-items-center justify-content-end">
                             <p class="food-number mb-0" style="font-size: 2pc;">${quantity}</p>
                             <p class="food-serving" style="font-size: small; margin-top: -5px;">${serving_size}</p>
-                        </div>   
-                        
-                    </div>
-                    <div id = "food-item-delete-button-div" class = "col-md-1 food-item-delete-button-div text-center align-items-center justify-content-end">
+                        </div> 
+                        </div>
+                            <div id = "food-item-delete-add-button-div-single" class = "col-md-1 food-item-delete-add-button-div-single text-center align-items-center justify-content-end">
+                                
                         <button type="button" data-id = "`+id+`" class = "btn btn-light delete-individual-btn">
                             <i class="fas fa-trash-alt"></i>
                         </button> 
                     </div> 
                 </div>`;
+
+        }
+        
+                return htmlString;
     }
 
     function fetch_item_rec_html(item, calories, protein, carbs, fats) {

@@ -140,6 +140,87 @@ body {
     color: white;
   }
 
+/* The switch - the box around the slider */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 24px;
+}
+
+/* Hide default HTML checkbox */
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(16px);
+  -ms-transform: translateX(16px);
+  transform: translateX(16px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 24px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+/* Toggle container */
+.toggle-container {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  margin-left: -3px;
+  margin-top: -6px;
+  padding: 0;
+}
+
+.toggle-label {
+  margin-right: 8px;
+  font-size: small;
+  margin-top: -8px;
+  margin-left: 10px;
+  color: rgb(117, 117, 117);
+}
+
   .delete-button {
     background-color: #dc3545;
     border-color: #dc3545;
@@ -229,7 +310,7 @@ body {
   margin:0; 
   border-radius: 5px; 
   background-color: white; 
-  height: 80px; 
+  height: 97px; 
   border-width: 1px; 
   border-style: solid; 
   border-color: rgb(182, 182, 182); 
@@ -238,9 +319,18 @@ body {
   align-items: center;
 }
 
-.food-item-delete-button-div {
-  margin-top: 21px;
+.food-item-delete-add-button-div {
+  margin-top: 6px;
   width: 16%;
+}
+
+.food-item-delete-add-button-div-single {
+  margin-top: 20px;
+  width: 16%;
+}
+
+.delete-individual-btn {
+  margin-top: 8px;
 }
 
 .rec-item-class {
@@ -276,6 +366,18 @@ body {
     justify-content: center;
 }
 
+.icon-food-plan {
+  height: 45px;
+  width: 45px;
+  border-color: #8f6b00;
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 
 .food-details {
     display: flex;
@@ -288,6 +390,8 @@ body {
     height: 20px;
     margin-right: 1px;
 }
+
+
 
 .food-info {
     display: flex;
@@ -311,7 +415,19 @@ body {
 
 .food-number {
     margin: 0;
-    margin-top: 6px;
+    margin-top: 12px;
+}
+
+.planned-indication {
+  color:#8f6b00;
+  border: #8f6b00 1px solid;
+  padding-right:10px;
+  padding-left: 10px;
+  height: 35px;
+  padding-top: 7px;
+  border-radius: 4px;
+  font-size: 0.8em;
+  margin-right: -10% !important;
 }
 
 .rec-calories-amount {
@@ -323,8 +439,15 @@ body {
 .food-quantity {
   background-color: #1E90FF;
   height: 100%;
-  width: 15%;
+  width: 100px;
   color: white;
+}
+
+.food-quantity-plan {
+  background-color: #ffe9a9;
+  height: 100%;
+  width: 100px;
+  color: #8f6b00;
 }
 
 .rec-calories {
@@ -570,6 +693,10 @@ body {
     .drawer {
       right: -90%;
       width: 90%;
+    }
+
+    .food-quantity {
+      width: 85px;
     }
     
 }

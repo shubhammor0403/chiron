@@ -115,13 +115,52 @@ $(document).ready(function() {
         updateSelectedDate(selectedDate);
     });
 
+    $('.toggle-switch input').change(function() {
+        if ($(this).is(':checked')) {
+          console.log('Switch is on');
+          $(".toggle-label").css('color','#1E90FF');
+        } else {
+            $(".toggle-label").css('color','rgb(117, 117, 117)');
+        }
+      });
+
+      
+     
+      
+      function changePlannedText() {
+        const $text = $('.planned-indication');
+        const screenWidth = $(window).width();
+
+        if (screenWidth < 768) {
+            $text.css('display','none')
+        } else {
+            $text.css('display','block')
+        }
+    }
+     if ($(window).width() < 768) {
+        changePlannedText();
+     }
+
+     $(window).on('resize', changePlannedText);
     function fetch_api(input_date, input_date_string, inputText = null) {
         $('#fetch-calories').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...');
+        if (input_date.getDate() === new Date().getDate()) {
+            $("#plan-mode-div").css('display','flex');
+        } else {
+            $("#plan-mode-div").css('display','none');
+        }
+        var isChecked = $("#plan-mode").is(':checked');
+        var mode = 'completed';
+        if(isChecked){
+            mode = 'plan';
+        }
+        console.log(mode);
         $.ajax({
             type: 'POST',
             url: '/api/fetch-calories/',
-            data: { 'input-text': inputText, 'input-date': input_date_string},
+            data: { 'input-text': inputText, 'input-date': input_date_string, 'mode': mode},
             success: function (data) {
+                console.log(data);
                 $('#result-food-items').html("");
                 if ('message' in data) {
                     $('#input-text').val('');
@@ -137,7 +176,7 @@ $(document).ready(function() {
                     displayAggregateData(data);
                     fetch_week_data();
 
-                    updateDeleteIndividualListeners();
+                    updateAddDeleteIndividualListeners();
                 
 
                     $('#title-top').text(input_date.toLocaleDateString('en-GB', { weekday: 'long' })+"'s Calorie Counter");
@@ -153,8 +192,7 @@ $(document).ready(function() {
         });
     };
 
-    function updateDeleteIndividualListeners() {
-        console.log('setting');
+    function updateAddDeleteIndividualListeners() {
         $('.delete-individual-btn').click(function (event) {
             var id = $(this).attr('data-id');
             $('#wrapper-'+id).slideUp('fast', function() {
@@ -169,6 +207,31 @@ $(document).ready(function() {
                         var selectedDateStr = $('.date-input').val();
                         var dateParts = selectedDateStr.split("/");
                         var selectedDate = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]);
+                        fetch_api(selectedDate, selectedDate.getFullYear() + '-' + ('0' + (selectedDate.getMonth() + 1)).slice(-2) + '-' + ('0' + selectedDate.getDate()).slice(-2));
+                    } 
+            },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                }
+            });
+            
+            
+
+        });
+
+        $('.add-planned-btn').click(function (event) {
+            var id = $(this).attr('data-id');
+            var selectedDateStr = $('.date-input').val();
+            var dateParts = selectedDateStr.split("/");
+            var selectedDate = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]);
+            var input_date_string = selectedDate.getFullYear() + '-' + ('0' + (selectedDate.getMonth() + 1)).slice(-2) + '-' + ('0' + selectedDate.getDate()).slice(-2);
+            $.ajax({
+                type: 'POST',
+                url: '/api/add-planned/',
+                data: { id: id },
+                success: function (data) {
+                if ('message' in data & data['message'] == 'Added') {
+                        
                         fetch_api(selectedDate, selectedDate.getFullYear() + '-' + ('0' + (selectedDate.getMonth() + 1)).slice(-2) + '-' + ('0' + selectedDate.getDate()).slice(-2));
                     } 
             },
@@ -221,9 +284,10 @@ $(document).ready(function() {
         function displayDataTable(data) {
             var tableHtml= "";
             for (var i = 0; i < data['table_data'].length; i++) {
-            tableHtml += fetch_table_item_html(data['table_data'][i]['Item'],data['table_data'][i]['Quantity'],data['table_data'][i]['Serving Size'],data['table_data'][i]['Calories'],data['table_data'][i]['Date'], data['table_data'][i]['id'])
+            tableHtml += fetch_table_item_html(data['table_data'][i]['Item'],data['table_data'][i]['Quantity'],data['table_data'][i]['Serving Size'],data['table_data'][i]['Calories'],data['table_data'][i]['Date'], data['table_data'][i]['id'], data['table_data'][i]['status'])
             }
             $('#result-food-items').html(tableHtml);
+            changePlannedText();
         }
 
         function displayAggregateData(data) {

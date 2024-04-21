@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .db import Session, push_to_db, fetch_from_db, fetch_weekly_data, query_db_existing, push_to_food_db, delete_db_calories, get_db_top_dishes, fetch_todays_items, delete_db_individual_calories
+from .db import Session, push_to_db, fetch_from_db, fetch_weekly_data, query_db_existing, push_to_food_db, delete_db_calories, get_db_top_dishes, fetch_todays_items, delete_db_individual_calories, add_db_planned_calories
 from .calorie_extractor import generate_calorie_info_from_llm, create_calorie_df, generate_food_structure, create_existingcheck_df, get_recommendations, process_recommendations, get_calories_for_rec, process_calories_for_rec
 from datetime import datetime
 from pytz import timezone
@@ -15,7 +15,7 @@ def fetch_calories(request):
     # Get the input text from the request
     input_text = request.data.get('input-text')
     input_date = request.data.get('input-date')
-    
+    mode = request.data.get('mode')
     # parse input_date to get date then check if today, then assign input_date = current date and time
     if input_date:
         date_obj = datetime.strptime(input_date, '%Y-%m-%d').date()
@@ -29,12 +29,17 @@ def fetch_calories(request):
         # print(input_text, structured_items)
         # print(create_existingcheck_df(structured_items))
         df, input_text_llm, quantities = query_db_existing(create_existingcheck_df(structured_items))
+        if not df.empty:
+            df['status'] = mode
+        
         # print(input_text_llm)
         if(input_text_llm!=""):
             calorie_info_from_llm = generate_calorie_info_from_llm(input_text_llm)
-            # print(calorie_info_from_llm)
+            print('calorie_info_from_llm',calorie_info_from_llm)
             df_llm = create_calorie_df(calorie_info_from_llm, quantities)
-            # print(df_llm)
+            df_llm['status'] = mode
+
+            # print('df_llm',df_llm)
             push_to_food_db(df_llm[['item', 'serving', 'calories_per_item', 'protein', 'carbs', 'fat']])
             df_llm = df_llm.drop(columns=['calories_per_item'])
             # print(existing_items_df, df_llm)
@@ -43,12 +48,14 @@ def fetch_calories(request):
         df = push_to_db(df,date_obj)
     else:
         df = pd.DataFrame(fetch_from_db(date_obj))
+
     
     if not df.empty:
-        total_calories = df['calories'].sum()
-        total_pr = df['protein'].sum()
-        total_cb = df['carbs'].sum()
-        total_fa = df['fat'].sum()
+        df = df.sort_values(by=['status', 'date'])
+        total_calories = df[df['status']=='completed']['calories'].sum()
+        total_pr = df[df['status']=='completed']['protein'].sum()
+        total_cb = df[df['status']=='completed']['carbs'].sum()
+        total_fa = df[df['status']=='completed']['fat'].sum()
         df['date'] = df['date'].dt.strftime('%I:%M %p').apply(lambda x: x.lstrip('0'))
         calorie_df = df.drop(columns=['protein','carbs','fat'])
         # modify column names of calorie_df to "Item","Quantity","Serving Size","Calories"
@@ -80,6 +87,16 @@ def delete_individual(request):
     input_id = request.data.get('id')
     delete_db_individual_calories(input_id)
     response = {'message': 'Deleted'}
+    
+    return Response(response)
+
+@api_view(['POST'])
+def add_planned(request):
+    input_date = datetime.now(timezone('Asia/Kolkata'))
+    
+    input_id = request.data.get('id')
+    add_db_planned_calories(input_id, input_date)
+    response = {'message': 'Added'}
     
     return Response(response)
 

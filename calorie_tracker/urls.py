@@ -8,6 +8,7 @@ urlpatterns = [
     path('api/delete-calories/', views.delete_calories, name='delete-calories'),
     path('api/fetch-suggestions/', views.fetch_suggestions, name='fetch-suggestions'),
     path('api/delete-individual/', views.delete_individual, name='delete-individual'),
+    path('api/add-planned/', views.add_planned, name='add-planned'),
     
     
 ]
