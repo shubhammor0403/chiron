@@ -216,7 +216,8 @@ def fetch_weekly_data():
         func.sum(ChironCalories.carbs).label('carbs'),
         func.sum(ChironCalories.fat).label('fat')
     ).filter(
-        ChironCalories.date.between(start_date_current_week, end_date_current_week)  # Filter by date range
+        ChironCalories.date.between(start_date_current_week, end_date_current_week),
+        ChironCalories.status == 'completed'
     ).group_by(
         func.date(ChironCalories.date)  # Group by date
     ).all()
