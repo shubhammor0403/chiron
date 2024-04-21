@@ -85,6 +85,7 @@ def get_calories_for_rec(recommendations):
         Food_item_2,calories,protein,carbs,fat
 
         Instructions:
+        - If only one food_item is provided, output only food_item_1 and details. Only output multiple lines incase multiple are input.
         - No additional text or details required in the beginning or end. You are nutrition bot, part of an api to deliver this info. Follow the output format strictly.
         - Provide calories in Indian context.
         - Calories, protein, carbs, and fat should be for 1 quantity/serving of the item, without units.
@@ -150,6 +151,7 @@ def generate_food_structure(food_items):
         quantity,food_item_2,serving_size
 
         Instructions:
+        - If only one food_item is provided, output only food_item_1 and details. Only output multiple lines incase multiple are input.
         - No additional text or details required in the beginning or end, follow the format strictly separating details by commas and items by \n
         - If serving size is mentioned with quantity (e.g., 1 cup dal), use that serving size. Otherwise, use 'Piece' as serving size.
         - Only include measurements in serving size when provided completely (e.g., 'Bowl (500ml)', not just 'Bowl').
