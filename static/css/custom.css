@@ -406,6 +406,7 @@ input:checked + .slider:before {
 .food-name {
     margin: 0;
     margin-top: 10px;
+    font-size: 1.5pc;
 }
 
 .rec-name {
@@ -416,6 +417,10 @@ input:checked + .slider:before {
 .food-number {
     margin: 0;
     margin-top: 12px;
+}
+
+.food-item-class {
+  height: auto !important;
 }
 
 .planned-indication {
@@ -698,5 +703,19 @@ input:checked + .slider:before {
     .food-quantity {
       width: 85px;
     }
+
+    .food-quantity-plan {
+      width: 85px;
+    }
+    
+    .food-name {
+      margin-bottom: 5px !important;
+    font-size: 1em !important;
+    line-height: 1.2;
+  }
+
+  .food-info {
+    width: 115px;
+  }
     
 }
