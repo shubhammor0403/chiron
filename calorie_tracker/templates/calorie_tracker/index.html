@@ -6,7 +6,7 @@
     <div class="container-fluid">
       <a class="navbar-brand" href="#">Chiron</a>
       <div class="d-flex">
-        <button id = "drawer-toggle" class="btn btn-outline-primary" type="button" style = "color: white; border: transparent;"><i class="fas fa-magic"></i></button>
+        <button id = "drawer-toggle" class="btn btn-outline-primary drawer-toggle" type="button" style = "color: white; border: transparent;"><i class="fas fa-bars"></i></button>
       </div>
     </div>
   </nav>
@@ -206,9 +206,11 @@
                         </div>
                         <div class="ml-auto m-4 text-center align-items-center justify-content-end planned-indication ">
                             Planned
-                            </div><div class="food-quantity-plan ml-auto text-center align-items-center justify-content-end">
-                            <p class="food-number mb-0" style="font-size: 2pc;">${quantity}</p>
-                            <p class="food-serving" style="font-size: small; margin-top: -5px;">${serving_size}</p>
+                            </div><div class="food-quantity-plan ml-auto d-flex text-center align-items-center justify-content-center">
+                                <div>
+                                    <p class="food-number mb-0" style="font-size: 2pc;">${quantity}</p>
+                                    <p class="food-serving" style="font-size: small; margin-top: -5px;">${serving_size}</p>
+                                </div>
                         </div> 
                         </div>
                             <div id = "food-item-delete-add-button-div" class = "col-md-1 food-item-delete-add-button-div text-center align-items-center justify-content-end">
@@ -236,9 +238,11 @@
                                 <span style="font-size:11px; margin:0; padding:0; color: #1E90FF;">Added @</span> 
                                 ${date}</p>
                         </div>
-                        <div class="food-quantity ml-auto text-center align-items-center justify-content-end">
+                        <div class="food-quantity ml-auto d-flex text-center align-items-center justify-content-center">
+                            <div>
                             <p class="food-number mb-0" style="font-size: 2pc;">${quantity}</p>
                             <p class="food-serving" style="font-size: small; margin-top: -5px;">${serving_size}</p>
+                            </div>
                         </div> 
                         </div>
                             <div id = "food-item-delete-add-button-div-single" class = "col-md-1 food-item-delete-add-button-div-single text-center align-items-center justify-content-end">

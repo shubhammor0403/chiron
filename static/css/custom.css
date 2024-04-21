@@ -421,6 +421,7 @@ input:checked + .slider:before {
 
 .food-item-class {
   height: auto !important;
+  min-height: 85px;
 }
 
 .planned-indication {
@@ -497,7 +498,7 @@ input:checked + .slider:before {
   width: 18%;
   height: 100%;
   background-color: #f4f4f4;
-  transition: right 0.3s ease-in-out; /* Add a transition for smooth animation */
+  transition: right 0.2s ease-in-out; /* Add a transition for smooth animation */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   z-index: 10;
 }
@@ -716,6 +717,10 @@ input:checked + .slider:before {
 
   .food-info {
     width: 115px;
+  }
+
+  .drawer-toggle {
+    margin-right: 10px;
   }
     
 }
