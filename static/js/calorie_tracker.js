@@ -33,7 +33,7 @@ $(document).ready(function() {
                     htmldata += fetch_item_rec_html(data[key][0]['item'], data[key][0]['calories'], data[key][0]['protein'], data[key][0]['carbs'], data[key][0]['fats']);
                     htmldata += fetch_item_rec_html(data[key][1]['item'], data[key][1]['calories'], data[key][1]['protein'], data[key][1]['carbs'], data[key][1]['fats']);
         }
-        $("#rec-display").html(htmldata);
+        $("#rec-display").hide().html(htmldata).slideDown()
         $(".rec-calories").css('height', 'auto');
         },
         error: function (xhr, status, error) {
