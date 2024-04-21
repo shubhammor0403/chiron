@@ -152,13 +152,14 @@ def generate_food_structure(food_items):
 
         Instructions:
         - If only one food_item is provided, output only food_item_1 and details. Only output multiple lines incase multiple are input.
+        - Make sure to get all quantities right (as per input), even if outputting one line.
         - No additional text or details required in the beginning or end, follow the format strictly separating details by commas and items by \n
-        - If serving size is mentioned with quantity (e.g., 1 cup dal), use that serving size. Otherwise, use 'Piece' as serving size.
+        - If serving size is mentioned with quantity (e.g., 1 cup dal), use that serving size Otherwise, use 'Piece' as serving size.
         - Only include measurements in serving size when provided completely (e.g., 'Bowl (500ml)', not just 'Bowl').
         - Capitalize first letter of every word in food_item and serving_size values.
         - If no quantity is given, assume quantity = 1.
-        - Quantities will mostly be given at the beginning (e.g., "3 Bananas" where 3 is the quantity).
-        - Possible input serving sizes can be [Bowl, Plate, Piece, Servings]. Output food_item values should not have serving size like [Bowl,Plate,etc.].
+        - Quantities will mostly be given at the beginning of each line (e.g., "3 Bananas" where 3 is the quantity, "1 Bowl Dal Chawal" where 1 is the quantity).
+        - Possible input serving sizes can be [Bowl, Plate, Piece, Servings] or whatever is input. Output food_item values should not have serving size like [Bowl,Plate,etc.].
         
         Food items:
         {food_items}
@@ -218,13 +219,14 @@ def generate_calorie_info_from_llm(food_items):
         serving_size,food_item_2,calories,protein,carbs,fat
 
         Instructions:
+        - If only one food_item is provided, output only food_item_1 and details. Only output multiple lines incase multiple are input.
         - No additional text or details required in the beginning or end. Follow the output format strictly, separating details by commas and items by \n.
         - Provide calories in Indian context.
         - Calories, protein, carbs, and fat should be for 1 serving _size of the item, without units.
-        - If serving size is mentioned, use that serving size to calculate calories. Otherwise, use 'Piece' as serving size.
+        - If serving size is mentioned, use that serving size to calculate calories and details. Otherwise, use 'Piece' as serving size.
         - Only include measurements in serving size when provided completely (e.g., 'Bowl (500ml)', not just 'Bowl').
         - Capitalize first letter of every word in food_item and serving_size values.
-        - In case multiple items are given in a single line separated by 'and'/'with', think step by step and output the total calories and details for each item.
+        - In case multiple items are given in a single line separated by 'and'/'with' (e.g. 3 Roti with Paneer Sabzi), think step by step and output the sum of calories and details for each item. (i.e calories of 3 Roti + calories of 1 Paneer Sabzi)
         
         Food items:
         {food_items}
