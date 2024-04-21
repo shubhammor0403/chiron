@@ -85,7 +85,6 @@ def get_calories_for_rec(recommendations):
         Food_item_2,calories,protein,carbs,fat
 
         Instructions:
-        - If only one food_item is provided, output only food_item_1 and details. Only output multiple lines incase multiple are input.
         - No additional text or details required in the beginning or end. You are nutrition bot, part of an api to deliver this info. Follow the output format strictly.
         - Provide calories in Indian context.
         - Calories, protein, carbs, and fat should be for 1 quantity/serving of the item, without units.
@@ -104,7 +103,6 @@ def get_calories_for_rec(recommendations):
         stop=None,
         temperature=0,
     )
-
     return response.choices[0].message.content.strip()
 
 def generate_food_structure(food_items):
@@ -144,7 +142,7 @@ def generate_food_structure(food_items):
     # """
 
 
-    prompt = f"""Human: Given a list of food items and their quantities, provide the following structured output for each item, separated by //: 
+    prompt = f"""Human: Given a list of food items and their quantities, provide the following structured output for each item, separated by \n: 
 
         Output Format:
         quantity,food_item_1,serving_size
@@ -159,7 +157,7 @@ def generate_food_structure(food_items):
         - Capitalize first letter of every word in food_item and serving_size values.
         - If no quantity is given, assume quantity = 1.
         - Quantities will mostly be given at the beginning of each line (e.g., "3 Bananas" where 3 is the quantity, "1 Bowl Dal Chawal" where 1 is the quantity).
-        - Possible input serving sizes can be [Bowl, Plate, Piece, Servings] or whatever is input. Output food_item values should not have serving size like [Bowl,Plate,etc.].
+        - Possible serving sizes can be [Bowl, Plate, Piece, Servings]. Output food_item values should not have serving size like [Bowl,Plate,etc.].
         
         Food items:
         {food_items}
@@ -176,6 +174,7 @@ def generate_food_structure(food_items):
         temperature=0,
     )
 
+    print(response.choices[0].message.content.strip())
     return response.choices[0].message.content.strip()
 
 def generate_calorie_info_from_llm(food_items):
@@ -219,6 +218,9 @@ def generate_calorie_info_from_llm(food_items):
         serving_size,food_item_1,calories,protein,carbs,fat
         serving_size,food_item_2,calories,protein,carbs,fat
 
+        Example Output:
+        Bowl,Dal Chawal,300,17,12,2
+
         Instructions:
         - If only one food_item is provided, output only food_item_1 and details. Output multiple lines only incase multiple food_items are input.
         - No additional text or details required in the beginning or end. Follow the output format strictly, separating details by commas and items by \n. You are part of an api to deliver this info. Follow the output format strictly.
@@ -243,7 +245,7 @@ def generate_calorie_info_from_llm(food_items):
         stop=None,
         temperature=0,
     )
-
+    print(response.choices[0].message.content.strip())
     return response.choices[0].message.content.strip()
 
 def create_existingcheck_df(calorie_info):
