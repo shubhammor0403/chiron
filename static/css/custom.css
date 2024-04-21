@@ -1,6 +1,6 @@
 body {
     background-color: #ffffff;
-    /* overflow: auto; */
+    overflow-y: auto;
 }
 
 .table {
@@ -18,6 +18,10 @@ body {
 
 .form-control:focus {
     border-color: #ffffff !important;
+}
+
+.no-scroll {
+  overflow: hidden;
 }
 
 .input-group:hover {
@@ -318,7 +322,10 @@ body {
 }
 
 .close-btn {
-  margin: 15px;
+  position: absolute;
+  top: 15px;
+  right: 6px;
+  margin: 5px;
   background-color: #fff;
   border: none;
   border-radius: 50%;
@@ -343,7 +350,7 @@ body {
 .drawer {
   position: fixed;
   top: 0;
-  right: -450px; /* Start off-screen */
+  right: -18%; /* Start off-screen */
   width: 18%;
   height: 100%;
   background-color: #f4f4f4;
@@ -546,6 +553,7 @@ body {
     }
 
     .drawer {
+      right: -90%;
       width: 90%;
     }
     

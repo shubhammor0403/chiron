@@ -18,6 +18,7 @@ $(document).ready(function() {
     
       $('#drawer-toggle').click(function() {
         $('.drawer').toggleClass('open');
+        disableBodyScrolling();
         $("#loader-icons").css("display", "block");
         $.ajax({
         type: 'POST',
@@ -42,8 +43,20 @@ $(document).ready(function() {
 
     });
 
+    
+        // Prevent scrolling of the main page when the drawer is open
+        function disableBodyScrolling() {
+            $('body').addClass('no-scroll');
+          }
+        
+          // Function to enable body scrolling
+          function enableBodyScrolling() {
+            $('body').removeClass('no-scroll');
+          }
+
       $('#close-drawer-btn').click(function() {
         $('.drawer').removeClass('open');
+        enableBodyScrolling();
         $("#loader-icons").css("display", "none");
         $("#rec-display").html("");
       });
@@ -174,27 +187,6 @@ $(document).ready(function() {
             }
         });
     });
-
-        // function displayDataTable(data) {
-        //     var tableHtml = '<table class="table table-bordered table-striped text-center" style = "margin-bottom: 35px;">';
-        //     tableHtml += '<tbody><tr>';
-        //     for (var key in data['table_data'][0]) {
-        //         tableHtml += '<td><b>' + key + '</b></td>';
-        //     }
-        //     tableHtml += '</tr>';
-        //     tableHtml += '';
-        //     for (var i = 0; i < data['table_data'].length; i++) {
-        //         tableHtml += '<tr>';
-        //         for (var key in data['table_data'][i]) {
-        //             tableHtml += '<td>' + data['table_data'][i][key] + '</td>';
-        //         }
-        //         tableHtml += '</tr>';
-        //     }
-        //     tableHtml += '<tr><td colspan="3"><b>Total Calories</b></td><td><b>'+data['total_calories']+'</b></td></tr>';
-
-        //     tableHtml += '</tbody></table>';
-        //     $('#result-table').html(tableHtml);
-        // }
         function displayDataTable(data) {
             
             var tableHtml= "";
